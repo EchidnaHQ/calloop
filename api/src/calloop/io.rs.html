@@ -447,9 +447,6 @@
 <span id="446">446</span>
 <span id="447">447</span>
 <span id="448">448</span>
-<span id="449">449</span>
-<span id="450">450</span>
-<span id="451">451</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Adapters for async IO objects</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module mainly hosts the [`Async`] adapter for making IO objects async with readiness</span>
@@ -886,10 +883,7 @@
         <span class="ident">sched</span>
             .<span class="ident">schedule</span>(<span class="kw">async</span> <span class="kw">move</span> {
                 <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="string">b&quot;Hello World!&quot;</span>;
-                <span class="kw">let</span> <span class="ident">ioslices</span> <span class="op">=</span> <span class="ident">buf</span>
-                    .<span class="ident">chunks</span>(<span class="number">2</span>)
-                    .<span class="ident">map</span>(<span class="ident">std::io::IoSlice::new</span>)
-                    .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+                <span class="kw">let</span> <span class="ident">ioslices</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">chunks</span>(<span class="number">2</span>).<span class="ident">map</span>(<span class="ident">std::io::IoSlice::new</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
                 <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">write_vectored</span>(<span class="kw-2">&amp;</span><span class="ident">ioslices</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
                 <span class="macro">assert_eq!</span>(<span class="ident">count</span>, <span class="number">12</span>);
                 <span class="ident">tx</span>.<span class="ident">flush</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
