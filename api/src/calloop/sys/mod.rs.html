@@ -256,13 +256,7 @@
 <span id="254">254</span>
 <span id="255">255</span>
 <span id="256">256</span>
-<span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">io</span>, <span class="ident">os::unix::io::RawFd</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::os::unix::io::RawFd</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::loop_logic::CalloopKey</span>;
 
@@ -451,7 +445,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Poll</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Poll</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="ident">Poll</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">Poll</span> {
             <span class="ident">poller</span>: <span class="ident">Poller::new</span>()<span class="question-mark">?</span>,
         })
@@ -460,7 +454,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">poll</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">std::time::Duration</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PollEvent</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PollEvent</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">poll</span>(<span class="ident">timeout</span>)
     }
 
@@ -481,12 +475,9 @@
         <span class="ident">interest</span>: <span class="ident">Interest</span>,
         <span class="ident">mode</span>: <span class="ident">Mode</span>,
         <span class="ident">token</span>: <span class="kw-2">*const</span> <span class="ident">Token</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">token</span>).<span class="ident">is_invalid</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">std::io::Error::new</span>(
-                <span class="ident">std::io::ErrorKind::InvalidInput</span>,
-                <span class="string">&quot;Invalid Token provided to register().&quot;</span>,
-            ));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::Error::InvalidToken</span>);
         }
         <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">register</span>(<span class="ident">fd</span>, <span class="ident">interest</span>, <span class="ident">mode</span>, <span class="ident">token</span>)
     }
@@ -506,12 +497,9 @@
         <span class="ident">interest</span>: <span class="ident">Interest</span>,
         <span class="ident">mode</span>: <span class="ident">Mode</span>,
         <span class="ident">token</span>: <span class="kw-2">*const</span> <span class="ident">Token</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">token</span>).<span class="ident">is_invalid</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">std::io::Error::new</span>(
-                <span class="ident">std::io::ErrorKind::InvalidInput</span>,
-                <span class="string">&quot;Invalid Token provided to reregister().&quot;</span>,
-            ));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::Error::InvalidToken</span>);
         }
         <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">reregister</span>(<span class="ident">fd</span>, <span class="ident">interest</span>, <span class="ident">mode</span>, <span class="ident">token</span>)
     }
@@ -520,10 +508,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This file descriptor will no longer generate events. Fails if the</span>
     <span class="doccomment">/// provided file descriptor is not currently registered.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">fd</span>: <span class="ident">RawFd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">fd</span>: <span class="ident">RawFd</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">unregister</span>(<span class="ident">fd</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-beta.5 (28c8a34e1 2022-01-27)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-beta.6 (0426998f5 2022-02-02)" ></div>
 </body></html>

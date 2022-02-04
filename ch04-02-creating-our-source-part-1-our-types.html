@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html" class="active"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li><li class="chapter-item expanded "><a href="ch02-06-errors.html"><strong aria-hidden="true">2.6.</strong> Error handling</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html" class="active"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -180,7 +180,7 @@
 <pre><code class="language-rust noplayground">pub struct ZeroMQSource
 {
     // Calloop components.
-    socket_source: calloop::generic::Generic&lt;calloop::generic::Fd&gt;,
+    socket_source: calloop::generic::Generic&lt;std::os::unix::io::RawFd&gt;,
     mpsc_receiver: calloop::channel::Channel&lt;?&gt;,
     wake_ping_receiver: calloop::ping::PingSource,
 }
@@ -190,7 +190,7 @@
 <pre><code class="language-rust noplayground">pub struct ZeroMQSource
 {
     // Calloop components.
-    socket_source: calloop::generic::Generic&lt;calloop::generic::Fd&gt;,
+    socket_source: calloop::generic::Generic&lt;std::os::unix::io::RawFd&gt;,
     mpsc_receiver: calloop::channel::Channel&lt;?&gt;,
     wake_ping_receiver: calloop::ping::PingSource,
 
@@ -218,7 +218,7 @@ where
 <p>Remember that it's not just <code>Vec&lt;T&gt;</code> and other sequence types that implement <code>IntoIterator</code> — <code>Option&lt;T&gt;</code> implements it too! There is also <code>std::iter::Once&lt;T&gt;</code>. So if a user of our API wants to enforce that all &quot;multi&quot;-part messages actually contain exactly one part, they can use this API with <code>T</code> being, say, <code>std::iter::Once&lt;zmq::Message&gt;</code> (or even just <code>[zmq::Message; 1]</code> in Rust 2021 edition).</p>
 </blockquote>
 <h2 id="associated-types"><a class="header" href="#associated-types">Associated types</a></h2>
-<p>The <code>EventSource</code> trait has three associated types:</p>
+<p>The <code>EventSource</code> trait has four associated types:</p>
 <ul>
 <li>
 <p><code>Event</code> - when an event is generated that our caller cares about (ie. not some internal thing), this is the data we provide to their callback. This will be another sequence of messages, but because we're constructing it we can be more opinionated about the type and use the return type of <code>zmq::Socket::recv_multipart()</code> which is <code>Vec&lt;Vec&lt;u8&gt;&gt;</code>.</p>
@@ -228,6 +228,9 @@ where
 </li>
 <li>
 <p><code>Ret</code> - this is the return type of the callback that's called on an event. Usually this will be a <code>Result</code> of some sort; in our case it's <code>std::io::Result&lt;()&gt;</code> just to signal whether some underlying operation failed or not.</p>
+</li>
+<li>
+<p><code>Error</code> - this is the error type returned by <code>process_events()</code> (not the user callback!). Having this as an associated type allows you to have more control over error propagation in nested event sources. We will use <a href="https://crates.io/crates/anyhow">Anyhow</a>, which is like a more fully-features <code>Box&lt;dyn Error&gt;</code>. It allows you to add context to any other error with a <code>context()</code> method.</p>
 </li>
 </ul>
 <p>So together these are:</p>
@@ -239,6 +242,7 @@ where
     type Event = Vec&lt;Vec&lt;u8&gt;&gt;;
     type Metadata = ();
     type Ret = io::Result&lt;()&gt;;
+    type Error = anyhow::Error;
     // ...
 }
 </code></pre>

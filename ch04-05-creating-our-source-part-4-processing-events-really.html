@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html" class="active"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li><li class="chapter-item expanded "><a href="ch02-06-errors.html"><strong aria-hidden="true">2.6.</strong> Error handling</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html" class="active"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -172,18 +172,26 @@
                         <h1 id="creating-our-source-part-iv-processing-events-really"><a class="header" href="#creating-our-source-part-iv-processing-events-really">Creating our source, part IV: processing events (really)</a></h1>
 <p>We have three events that could wake up our event source: the ping, the channel, and the zsocket itself becoming ready to use. <em>All three of these reasons</em> potentially mean doing something on the zsocket: if the ping fired, we need to check for any pending events. If the channel received a message, we want to check if the zsocket is already readable and send it. If the zsocket becomes readable or writeable, we want to read from or write to it. In other words... We want to run it every time!</p>
 <p>Also notice that in the zsocket <code>process_events()</code> call, we don't use any of the arguments, including the event itself. That file descriptor is merely a signalling mechanism! Sending and receiving messages is what will actually clear any pending events on it, and reset it to a state where it will wake the event loop later.</p>
-<pre><code class="language-rust noplayground">let events = self.socket.events()?;
+<pre><code class="language-rust noplayground">let events = self
+    .socket
+    .get_events()
+    .context(&quot;Failed to read ZeroMQ events&quot;)?;
 
 if events.contains(zmq::POLLOUT) {
     if let Some(parts) = self.outbox.pop_front() {
         self.socket
-            .send_multipart(parts, 0)?;
+            .send_multipart(parts, 0)
+            .context(&quot;Failed to send message&quot;)?;
     }
 }
 
 if events.contains(zmq::POLLIN) {
-    let messages = self.socket.recv_multipart(0)?;
-    callback(messages, &amp;mut ())?;
+    let messages =
+        self.socket
+            .recv_multipart(0)
+            .context(&quot;Failed to receive message&quot;)?;
+    callback(messages, &amp;mut ())
+        .context(&quot;Error in event callback&quot;)?;
 }
 </code></pre>
 <p>So the second draft of our <code>process_events()</code> function is now:</p>
@@ -192,7 +200,7 @@ if events.contains(zmq::POLLIN) {
     readiness: calloop::Readiness,
     token: calloop::Token,
     mut callback: F,
-) -&gt; io::Result&lt;calloop::PostAction&gt;
+) -&gt; Result&lt;calloop::PostAction, Self::Error&gt;
 where
     F: FnMut(Self::Event, &amp;mut Self::Metadata) -&gt; Self::Ret,
 {
@@ -212,18 +220,26 @@ where
 
 	// Always process any pending zsocket events.
 
-    let events = self.socket.get_events()?;
+    let events = self
+        .socket
+        .get_events()
+        .context(&quot;Failed to read ZeroMQ events&quot;)?;
 
     if events.contains(zmq::POLLOUT) {
         if let Some(parts) = self.outbox.pop_front() {
             self.socket
-                .send_multipart(parts, 0)?;
+                .send_multipart(parts, 0)
+                .context(&quot;Failed to send message&quot;)?;
         }
     }
 
     if events.contains(zmq::POLLIN) {
-        let messages = self.socket.recv_multipart(0)?;
-        callback(messages, &amp;mut ())?;
+        let messages =
+            self.socket
+                .recv_multipart(0)
+                .context(&quot;Failed to receive message&quot;)?;
+        callback(messages, &amp;mut ())
+            .context(&quot;Error in event callback&quot;)?;
     }
 
     Ok(calloop::PostAction::Continue)
@@ -248,23 +264,32 @@ where
 <p>For <em>this specific example</em>, it will suffice to re-read the zsocket events in between the <code>if</code> statements. Then when we get to the second <code>events</code> check, it will indeed contain <code>zmq::POLLIN</code> and receive the pending message. But this is not good enough for the general case! If we replace REQ with REP above, we'll get the opposite problem: our first check (for <code>POLLOUT</code>) will be false. Our second check (<code>POLLIN</code>) will be true. We'll receive a message, leave <code>process_events()</code>, and never wake up again.</p>
 <p>The full solution is to recognise that any user action on a ZeroMQ socket can cause the pending events to change, or just to remain active, without re-triggering the &quot;interface&quot; file descriptor. So we need to (a) do this repeatedly and (b) keep track of when we have or haven't performed an action on the zsocket. Here's one way to do it:</p>
 <pre><code class="language-rust noplayground">loop {
-    let events = self.socket.get_events()?;
+    let events = self
+        .socket
+        .get_events()
+        .context(&quot;Failed to read ZeroMQ events&quot;)?;
+
     let mut used_socket = false;
 
     if events.contains(zmq::POLLOUT) {
         if let Some(parts) = self.outbox.pop_front() {
             self.socket
                 .as_ref()
-                .send_multipart(parts, 0)?;
+                .send_multipart(parts, 0)
+                .context(&quot;Failed to send message&quot;)?;
             used_socket = true;
         }
     }
 
     if events.contains(zmq::POLLIN) {
-        let messages = self.socket.recv_multipart(0)?;
+        let messages =
+            self.socket
+                .recv_multipart(0)
+                .context(&quot;Failed to receive message&quot;)?;
         used_socket = true;
 
-        callback(messages, &amp;mut ())?;
+        callback(messages, &amp;mut ())
+            .context(&quot;Error in event callback&quot;)?;
     }
 
     if !used_socket {

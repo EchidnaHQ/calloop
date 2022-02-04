@@ -92,7 +92,7 @@
 <span id="90">90</span>
 <span id="91">91</span>
 <span id="92">92</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">io</span>, <span class="ident">os::unix::io::RawFd</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::os::unix::io::RawFd</span>;
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Interest</span>, <span class="ident">Mode</span>, <span class="ident">PollEvent</span>, <span class="ident">Readiness</span>, <span class="ident">Token</span>};
 
@@ -127,7 +127,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Epoll</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Epoll</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="ident">Epoll</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">epoll_fd</span> <span class="op">=</span> <span class="ident">epoll::epoll_create1</span>(<span class="ident">epoll::EpollCreateFlags::EPOLL_CLOEXEC</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">Epoll</span> { <span class="ident">epoll_fd</span> })
     }
@@ -135,7 +135,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">poll</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">std::time::Duration</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PollEvent</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PollEvent</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> [<span class="ident">epoll::EpollEvent::empty</span>(); <span class="number">32</span>];
         <span class="kw">let</span> <span class="ident">timeout</span> <span class="op">=</span> <span class="ident">timeout</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">as_millis</span>() <span class="kw">as</span> <span class="ident">isize</span>).<span class="ident">unwrap_or</span>(<span class="op">-</span><span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">n_ready</span> <span class="op">=</span> <span class="ident">epoll::epoll_wait</span>(<span class="self">self</span>.<span class="ident">epoll_fd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">buffer</span>, <span class="ident">timeout</span>)<span class="question-mark">?</span>;
@@ -156,7 +156,7 @@
         <span class="ident">interest</span>: <span class="ident">Interest</span>,
         <span class="ident">mode</span>: <span class="ident">Mode</span>,
         <span class="ident">token</span>: <span class="kw-2">*const</span> <span class="ident">Token</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">epoll::EpollEvent::new</span>(<span class="ident">make_flags</span>(<span class="ident">interest</span>, <span class="ident">mode</span>), <span class="ident">token</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="kw">as</span> <span class="ident">u64</span>);
         <span class="ident">epoll::epoll_ctl</span>(<span class="self">self</span>.<span class="ident">epoll_fd</span>, <span class="ident">epoll::EpollOp::EpollCtlAdd</span>, <span class="ident">fd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">event</span>)
             .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
@@ -168,13 +168,13 @@
         <span class="ident">interest</span>: <span class="ident">Interest</span>,
         <span class="ident">mode</span>: <span class="ident">Mode</span>,
         <span class="ident">token</span>: <span class="kw-2">*const</span> <span class="ident">Token</span>,
-    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">epoll::EpollEvent::new</span>(<span class="ident">make_flags</span>(<span class="ident">interest</span>, <span class="ident">mode</span>), <span class="ident">token</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="kw">as</span> <span class="ident">u64</span>);
         <span class="ident">epoll::epoll_ctl</span>(<span class="self">self</span>.<span class="ident">epoll_fd</span>, <span class="ident">epoll::EpollOp::EpollCtlMod</span>, <span class="ident">fd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">event</span>)
             .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">fd</span>: <span class="ident">RawFd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">fd</span>: <span class="ident">RawFd</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">epoll::epoll_ctl</span>(<span class="self">self</span>.<span class="ident">epoll_fd</span>, <span class="ident">epoll::EpollOp::EpollCtlDel</span>, <span class="ident">fd</span>, <span class="prelude-val">None</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
     }
 }
@@ -185,5 +185,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-beta.5 (28c8a34e1 2022-01-27)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-beta.6 (0426998f5 2022-02-02)" ></div>
 </body></html>

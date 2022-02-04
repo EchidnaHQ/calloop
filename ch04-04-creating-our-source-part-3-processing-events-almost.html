@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html" class="active"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li><li class="chapter-item expanded "><a href="ch02-06-errors.html"><strong aria-hidden="true">2.6.</strong> Error handling</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html" class="active"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -176,7 +176,7 @@
     readiness: calloop::Readiness,
     token: calloop::Token,
     mut callback: F,
-) -&gt; io::Result&lt;calloop::PostAction&gt;
+) -&gt; Result&lt;calloop::PostAction, Self::Error&gt;
 where
     F: FnMut(Self::Event, &amp;mut Self::Metadata) -&gt; Self::Ret,
 </code></pre>
@@ -201,19 +201,21 @@ where
 <p>Note that these <code>PostAction</code> values correspond to various methods on the <code>LoopHandle</code> type (eg. <code>PostAction::Disable</code> does the same as <code>LoopHandle::disable()</code>). Whether you control your event source by returning a <code>PostAction</code> or using the <code>LoopHandle</code> methods depends on whether it makes more sense for these actions to be taken from within your event source or by something else in your code.</p>
 <p>Implementing <code>process_events()</code> for a type that contains various Calloop sources composed together, like we have, is done recursively by calling our internal sources' <code>process_events()</code> method. The <code>token</code> that Calloop gives us is how each event source determines whether it was responsible for the wakeup and has events to process.</p>
 <p>If we were woken up because of the ping source, then the ping source's <code>process_events()</code> will see that the token matches its own, and call the callback (possibly multiple times). If we were woken up because a message was sent through the MPSC channel, then the channel's <code>process_events()</code> will match on the token instead and call the callback for every message waiting. The zsocket is a little different, and we'll go over that in detail.</p>
+<p>For error handling we're using <a href="https://crates.io/crates/anyhow">Anyhow</a>, hence the <code>context()</code> calls on each fallible operation. These just add a message to any error that might appear in a traceback.</p>
 <p>So a first draft of our code might look like:</p>
 <pre><code class="language-rust noplayground">fn process_events&lt;F&gt;(
     &amp;mut self,
     readiness: calloop::Readiness,
     token: calloop::Token,
     mut callback: F,
-) -&gt; io::Result&lt;calloop::PostAction&gt;
+) -&gt; Result&lt;calloop::PostAction, Self::Error&gt;
 where
     F: FnMut(Self::Event, &amp;mut Self::Metadata) -&gt; Self::Ret,
 {
     // Runs if we were woken up on startup/registration.
     self.wake_ping_receiver
-        .process_events(readiness, token, |_, _| {})?;
+        .process_events(readiness, token, |_, _| {})
+        .context(&quot;Failed after registration&quot;)?;
 
     // Runs if we received a message over the MPSC channel.
     self.mpsc_receiver
@@ -221,22 +223,32 @@ where
             // 'evt' could be a message or a &quot;sending end closed&quot;
             // notification. We don't care about the latter.
             if let calloop::channel::Event::Msg(msg) = evt {
-                self.socket.send_multipart(msg, 0)?;
+                self.socket
+                    .send_multipart(msg, 0)
+                    .context(&quot;Failed to send message&quot;)?;
             }
         })?;
 
 	// Runs if the zsocket became read/write-able.
     self.socket
         .process_events(readiness, token, |_, _| {
-            let events = self.socket.get_events()?;
+            let events =
+                self.socket
+                    .get_events()
+                    .context(&quot;Failed to read ZeroMQ events&quot;)?;
         
             if events.contains(zmq::POLLOUT) {
                 // Wait, what do we do here?
             }
 
             if events.contains(zmq::POLLIN) {
-                let messages = self.socket.recv_multipart(0)?;
-                callback(messages, &amp;mut ())?;
+                let messages =
+                    self.socket
+                        .recv_multipart(0)
+                        .context(&quot;Failed to receive message&quot;)?;
+
+                callback(messages, &amp;mut ())
+                    .context(&quot;Error in event callback&quot;)?;
             }
         })?;
 
@@ -251,7 +263,9 @@ where
 <pre><code class="language-rust noplayground">self.mpsc_receiver
     .process_events(readiness, token, |evt, _| {
         if let calloop::channel::Event::Msg(msg) = evt {
-            self.socket.send_multipart(msg, 0)?;
+            self.socket
+                .send_multipart(msg, 0)
+                .context(&quot;Failed to send message&quot;)?;
         }
     })?;
 </code></pre>
@@ -264,7 +278,7 @@ where
     T::Item: Into&lt;zmq::Message&gt;,
 {
     // Calloop components.
-    socket_source: calloop::generic::Generic&lt;calloop::generic::Fd&gt;,
+    socket_source: calloop::generic::Generic&lt;std::os::unix::io::RawFd&gt;,
     mpsc_receiver: calloop::channel::Channel&lt;T&gt;,
     wake_ping_receiver: calloop::ping::PingSource,
 
@@ -291,18 +305,26 @@ self.mpsc_receiver
 <p>And our &quot;zsocket is writeable&quot; code becomes:</p>
 <pre><code class="language-rust noplayground">self.socket
     .process_events(readiness, token, |_, _| {
-        let events = self.socket.get_events()?;
+        let events = self
+            .socket
+            .get_events()
+            .context(&quot;Failed to read ZeroMQ events&quot;)?;
     
         if events.contains(zmq::POLLOUT) {
             if let Some(parts) = self.outbox.pop_front() {
                 self.socket
-                    .send_multipart(parts, 0)?;
+                    .send_multipart(parts, 0)
+                    .context(&quot;Failed to send message&quot;)?;
             }
        }
 
         if events.contains(zmq::POLLIN) {
-            let messages = self.socket.recv_multipart(0)?;
-            callback(messages, &amp;mut ())?;
+            let messages =
+                self.socket
+                    .recv_multipart(0)
+                    .context(&quot;Failed to receive message&quot;)?;
+            callback(messages, &amp;mut ())
+                .context(&quot;Error in event callback&quot;)?;
         }
     })?;
 

@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html" class="active"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html" class="active"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li><li class="chapter-item expanded "><a href="ch02-06-errors.html"><strong aria-hidden="true">2.6.</strong> Error handling</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -190,26 +190,20 @@
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new()
-</span><span class="boring">            .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span>    let source = Timer::new()
-        .expect(&quot;Failed to create timer event source!&quot;);
+</span>    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 
     let timer_handle = source.handle();
-    timer_handle
-        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 <span class="boring">
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
 </span><span class="boring">    handle
-</span><span class="boring">        .insert_source(
-</span><span class="boring">            source,
-</span><span class="boring">            |event, _metadata, shared_data| {
-</span><span class="boring">                println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">                shared_data.stop();
-</span><span class="boring">            },
-</span><span class="boring">        )
+</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
+</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
+</span><span class="boring">            shared_data.stop();
+</span><span class="boring">        })
 </span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let mut shared_data = event_loop.get_signal();
@@ -236,26 +230,20 @@
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span>    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-        EventLoop::try_new()
-            .expect(&quot;Failed to initialize the event loop!&quot;);
+        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 <span class="boring">
-</span><span class="boring">    let source = Timer::new()
-</span><span class="boring">        .expect(&quot;Failed to create timer event source!&quot;);
+</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle
-</span><span class="boring">        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
 </span><span class="boring">    handle
-</span><span class="boring">        .insert_source(
-</span><span class="boring">            source,
-</span><span class="boring">            |event, _metadata, shared_data| {
-</span><span class="boring">                println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">                shared_data.stop();
-</span><span class="boring">            },
-</span><span class="boring">        )
+</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
+</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
+</span><span class="boring">            shared_data.stop();
+</span><span class="boring">        })
 </span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let mut shared_data = event_loop.get_signal();
@@ -270,26 +258,20 @@
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new()
-</span><span class="boring">            .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span><span class="boring">    let source = Timer::new()
-</span><span class="boring">        .expect(&quot;Failed to create timer event source!&quot;);
+</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle
-</span><span class="boring">        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
 </span><span class="boring">    handle
-</span><span class="boring">        .insert_source(
-</span><span class="boring">            source,
-</span><span class="boring">            |event, _metadata, shared_data| {
-</span><span class="boring">                println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">                shared_data.stop();
-</span><span class="boring">            },
-</span><span class="boring">        )
+</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
+</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
+</span><span class="boring">            shared_data.stop();
+</span><span class="boring">        })
 </span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
 </span><span class="boring">
 </span>    let mut shared_data = event_loop.get_signal();
@@ -306,26 +288,20 @@
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new()
-</span><span class="boring">            .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span><span class="boring">    let source = Timer::new()
-</span><span class="boring">        .expect(&quot;Failed to create timer event source!&quot;);
+</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle
-</span><span class="boring">        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 </span><span class="boring">
 </span>    let handle = event_loop.handle();
 
     handle
-        .insert_source(
-            source,
-            |event, _metadata, shared_data| {
-                println!(&quot;Event fired: {}&quot;, event);
-                shared_data.stop();
-            },
-        )
+        .insert_source(source, |event, _metadata, shared_data| {
+            println!(&quot;Event fired: {}&quot;, event);
+            shared_data.stop();
+        })
         .expect(&quot;Failed to insert event source!&quot;);
 <span class="boring">
 </span><span class="boring">    let mut shared_data = event_loop.get_signal();
@@ -355,26 +331,20 @@
 
 fn main() {
     let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-        EventLoop::try_new()
-            .expect(&quot;Failed to initialize the event loop!&quot;);
+        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 
-    let source = Timer::new()
-        .expect(&quot;Failed to create timer event source!&quot;);
+    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 
     let timer_handle = source.handle();
-    timer_handle
-        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 
     let handle = event_loop.handle();
 
     handle
-        .insert_source(
-            source,
-            |event, _metadata, shared_data| {
-                println!(&quot;Event fired: {}&quot;, event);
-                shared_data.stop();
-            },
-        )
+        .insert_source(source, |event, _metadata, shared_data| {
+            println!(&quot;Event fired: {}&quot;, event);
+            shared_data.stop();
+        })
         .expect(&quot;Failed to insert event source!&quot;);
 
     let mut shared_data = event_loop.get_signal();

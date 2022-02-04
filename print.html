@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-00-where-to-start.html">Where to start</a></li><li class="chapter-item expanded "><a href="ch01-00-how-an-event-loop-works.html"><strong aria-hidden="true">1.</strong> How an event loop works</a></li><li class="chapter-item expanded "><a href="ch02-00-event-sources.html"><strong aria-hidden="true">2.</strong> Using event sources</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-generic.html"><strong aria-hidden="true">2.1.</strong> Monitoring a file descriptor</a></li><li class="chapter-item expanded "><a href="ch02-02-timers.html"><strong aria-hidden="true">2.2.</strong> Timers</a></li><li class="chapter-item expanded "><a href="ch02-03-ping.html"><strong aria-hidden="true">2.3.</strong> Ping</a></li><li class="chapter-item expanded "><a href="ch02-04-channels.html"><strong aria-hidden="true">2.4.</strong> Channels</a></li><li class="chapter-item expanded "><a href="ch02-05-signals.html"><strong aria-hidden="true">2.5.</strong> Unix Signals</a></li><li class="chapter-item expanded "><a href="ch02-06-errors.html"><strong aria-hidden="true">2.6.</strong> Error handling</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-async-await.html"><strong aria-hidden="true">3.</strong> I need async/await!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-run-async-code.html"><strong aria-hidden="true">3.1.</strong> Run async code</a></li><li class="chapter-item expanded "><a href="ch03-02-async-io-types.html"><strong aria-hidden="true">3.2.</strong> Async IO types</a></li></ol></li><li class="chapter-item expanded "><a href="ch04-00-a-full-example-zeromq.html"><strong aria-hidden="true">4.</strong> A full example: ZeroMQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-composition.html"><strong aria-hidden="true">4.1.</strong> Composition</a></li><li class="chapter-item expanded "><a href="ch04-02-creating-our-source-part-1-our-types.html"><strong aria-hidden="true">4.2.</strong> Creating our source, part I: our types</a></li><li class="chapter-item expanded "><a href="ch04-03-creating-our-source-part-2-setup-methods.html"><strong aria-hidden="true">4.3.</strong> Creating our source, part II: setup methods</a></li><li class="chapter-item expanded "><a href="ch04-04-creating-our-source-part-3-processing-events-almost.html"><strong aria-hidden="true">4.4.</strong> Creating our source, part III: processing events (almost)</a></li><li class="chapter-item expanded "><a href="ch04-05-creating-our-source-part-4-processing-events-really.html"><strong aria-hidden="true">4.5.</strong> Creating our source, part IV: processing events (really)</a></li><li class="chapter-item expanded "><a href="ch04-06-the-full-zeromq-event-source-code.html"><strong aria-hidden="true">4.6.</strong> The full ZeroMQ event source code</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -246,26 +246,20 @@ do_thing_three().await;
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new()
-</span><span class="boring">            .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span>    let source = Timer::new()
-        .expect(&quot;Failed to create timer event source!&quot;);
+</span>    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 
     let timer_handle = source.handle();
-    timer_handle
-        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 <span class="boring">
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
 </span><span class="boring">    handle
-</span><span class="boring">        .insert_source(
-</span><span class="boring">            source,
-</span><span class="boring">            |event, _metadata, shared_data| {
-</span><span class="boring">                println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">                shared_data.stop();
-</span><span class="boring">            },
-</span><span class="boring">        )
+</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
+</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
+</span><span class="boring">            shared_data.stop();
+</span><span class="boring">        })
 </span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let mut shared_data = event_loop.get_signal();
@@ -292,26 +286,20 @@ do_thing_three().await;
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span>    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-        EventLoop::try_new()
-            .expect(&quot;Failed to initialize the event loop!&quot;);
+        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 <span class="boring">
-</span><span class="boring">    let source = Timer::new()
-</span><span class="boring">        .expect(&quot;Failed to create timer event source!&quot;);
+</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle
-</span><span class="boring">        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
 </span><span class="boring">    handle
-</span><span class="boring">        .insert_source(
-</span><span class="boring">            source,
-</span><span class="boring">            |event, _metadata, shared_data| {
-</span><span class="boring">                println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">                shared_data.stop();
-</span><span class="boring">            },
-</span><span class="boring">        )
+</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
+</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
+</span><span class="boring">            shared_data.stop();
+</span><span class="boring">        })
 </span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let mut shared_data = event_loop.get_signal();
@@ -326,26 +314,20 @@ do_thing_three().await;
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new()
-</span><span class="boring">            .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span><span class="boring">    let source = Timer::new()
-</span><span class="boring">        .expect(&quot;Failed to create timer event source!&quot;);
+</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle
-</span><span class="boring">        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
 </span><span class="boring">    handle
-</span><span class="boring">        .insert_source(
-</span><span class="boring">            source,
-</span><span class="boring">            |event, _metadata, shared_data| {
-</span><span class="boring">                println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">                shared_data.stop();
-</span><span class="boring">            },
-</span><span class="boring">        )
+</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
+</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
+</span><span class="boring">            shared_data.stop();
+</span><span class="boring">        })
 </span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
 </span><span class="boring">
 </span>    let mut shared_data = event_loop.get_signal();
@@ -362,26 +344,20 @@ do_thing_three().await;
 </span><span class="boring">
 </span><span class="boring">fn main() {
 </span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new()
-</span><span class="boring">            .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span><span class="boring">    let source = Timer::new()
-</span><span class="boring">        .expect(&quot;Failed to create timer event source!&quot;);
+</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle
-</span><span class="boring">        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 </span><span class="boring">
 </span>    let handle = event_loop.handle();
 
     handle
-        .insert_source(
-            source,
-            |event, _metadata, shared_data| {
-                println!(&quot;Event fired: {}&quot;, event);
-                shared_data.stop();
-            },
-        )
+        .insert_source(source, |event, _metadata, shared_data| {
+            println!(&quot;Event fired: {}&quot;, event);
+            shared_data.stop();
+        })
         .expect(&quot;Failed to insert event source!&quot;);
 <span class="boring">
 </span><span class="boring">    let mut shared_data = event_loop.get_signal();
@@ -411,26 +387,20 @@ do_thing_three().await;
 
 fn main() {
     let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-        EventLoop::try_new()
-            .expect(&quot;Failed to initialize the event loop!&quot;);
+        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 
-    let source = Timer::new()
-        .expect(&quot;Failed to create timer event source!&quot;);
+    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
 
     let timer_handle = source.handle();
-    timer_handle
-        .add_timeout(Duration::from_secs(5), &quot;Timeout reached!&quot;);
+    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
 
     let handle = event_loop.handle();
 
     handle
-        .insert_source(
-            source,
-            |event, _metadata, shared_data| {
-                println!(&quot;Event fired: {}&quot;, event);
-                shared_data.stop();
-            },
-        )
+        .insert_source(source, |event, _metadata, shared_data| {
+            println!(&quot;Event fired: {}&quot;, event);
+            shared_data.stop();
+        })
         .expect(&quot;Failed to insert event source!&quot;);
 
     let mut shared_data = event_loop.get_signal();
@@ -446,6 +416,33 @@ fn main() {
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="ping"><a class="header" href="#ping">Ping</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="channels"><a class="header" href="#channels">Channels</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="unix-signals"><a class="header" href="#unix-signals">Unix Signals</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="error-handling-in-calloop"><a class="header" href="#error-handling-in-calloop">Error handling in Calloop</a></h1>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Most error handling crates/guides/documentation for Rust focus on one of two situations:</p>
+<ul>
+<li>Creating errors that an API can propagate out to a user of the API, or</li>
+<li>Making your library deal nicely with the <code>Result</code>s from closure or trait methods that it might call</li>
+</ul>
+<p>Calloop has to do both of these things. It needs to provide a library user with errors that work well with <code>?</code> and common error-handling idioms in their own code, and it needs to handle errors from the callbacks you give to <code>process_events()</code> or <code>insert_source()</code>. It <em>also</em> needs to provide some flexibility in the <code>EventSource</code> trait, which is used both for internal event sources and by users of the library.</p>
+<p>Because of this, error handling in Calloop leans more towards having separate error types for different concerns. This may mean that there is some extra conversion code in places like returning results from <code>process_events()</code>, or in callbacks that use other libraries. However, we try to make it smoother to do these conversions, and to make sure information isn't lost in doing so.</p>
+<p>If your crate already has some form of structured error handling, Calloop's error types should pose no problem to integrate into this. All of Calloop's errors implement <code>std::error::Error</code> and can be manipulated the same as any other error types.</p>
+<p>The place where this becomes the most complex is in the <code>process_events()</code> method on the <code>EventSource</code> trait.</p>
+<h2 id="the-error-type-on-the-eventsource-trait"><a class="header" href="#the-error-type-on-the-eventsource-trait">The Error type on the EventSource trait</a></h2>
+<p>The <code>EventSource</code> trait contains an associated type named <code>Error</code>, which forms part of the return type from <code>process_events()</code>. This type must be convertible into <code>Box&lt;dyn std::error::Error + Sync + Send&gt;</code>, which means you can use:</p>
+<ul>
+<li>Your own error type that implements <code>std::error::Error</code></li>
+<li>A structured error type created with <a href="https://crates.io/crates/thiserror"><em>Thiserror</em></a></li>
+<li><code>Box&lt;dyn std::error::Error + Sync + Send&gt;</code></li>
+<li>A flexible string-based error type such as <a href="https://crates.io/crates/anyhow"><em>Anyhow's</em></a> <code>anyhow::Error</code></li>
+</ul>
+<p>As a rule, if you implement <code>EventSource</code> you should try to split your errors into two different categories:</p>
+<ul>
+<li>Errors that make sense as a kind of event. These should be a part of the <code>Event</code> associated type eg. as an enum or <code>Result</code>.</li>
+<li>Errors that mean your event source simply cannot process more events. These should form the <code>Error</code> associated type.</li>
+</ul>
+<p>For an example, take Calloop's channel type, <a href="api/calloop/channel/struct.Channel.html"><code>calloop::channel::Channel</code></a>. When the sending end is dropped, no more messages can be received after that point. But this is not returned as an error when calling <code>process_events()</code>, because you still want to (and can!) receive messages sent before that point that might still be in the queue. Hence the events received by the callback for this source can be <code>Msg(e)</code> or <code>Closed</code>.</p>
+<p>However, if the internal ping source produces an error, there is no way for the sending end of the channel to notify the receiver. It is impossible to process more events on this event source, and the caller needs to decide how to recover from this situation. Hence this is returned as a <code>ChannelError</code> from <code>process_events()</code>.</p>
+<p>Another example might be an event source that represents a running subprocess. If the subprocess exits with a non-zero status code, or the executable can't be found, those don't mean that events can no longer be processed. They can be provided to the caller through the callback. But if the lower level sources being used to run (eg. an asynchronous executor or subprocess file descriptor) fail to work as expected, <code>process_events()</code> should return an error.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="asyncawait-in-calloop"><a class="header" href="#asyncawait-in-calloop">Async/await in calloop</a></h1>
 <p>While it is centered on event sources and callbacks, calloop also provides adapters to integrate with Rust's async ecosystem. These adapters come in two parts: <a href="chp03-01-run-async-code.html">a futures executor</a> and <a href="chp03-02-async-io.html">an async adapter for IO type</a>.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="run-async-code"><a class="header" href="#run-async-code">Run async code</a></h1>
@@ -478,10 +475,12 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span><span class="boring">    // Let's create two channels for our async blocks below. The blocks will
 </span><span class="boring">    // exchange messages via these channels.
@@ -542,10 +541,12 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
 </span>    let mut event_loop = EventLoop::try_new()?;
     let handle = event_loop.handle();
 
-    handle.insert_source(exec, |evt, _metadata, _shared| {
-        // Print the value of the async block ie. the return value.
-        println!(&quot;Async block ended with: {}&quot;, evt);
-    })?;
+    handle
+        .insert_source(exec, |evt, _metadata, _shared| {
+            // Print the value of the async block ie. the return value.
+            println!(&quot;Async block ended with: {}&quot;, evt);
+        })
+        .map_err(|e| e.error)?;
 <span class="boring">
 </span><span class="boring">    // Let's create two channels for our async blocks below. The blocks will
 </span><span class="boring">    // exchange messages via these channels.
@@ -606,10 +607,12 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span>    // Let's create two channels for our async blocks below. The blocks will
     // exchange messages via these channels.
@@ -671,10 +674,12 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span><span class="boring">    // Let's create two channels for our async blocks below. The blocks will
 </span><span class="boring">    // exchange messages via these channels.
@@ -754,7 +759,6 @@ version = ...
 <p>Just like in the async example, we will use the components in <a href="api/calloop/futures/"><code>calloop::futures</code></a>. First, obtain both an executor and a scheduler with <a href="api/calloop/futures/fn.executor.html"><code>calloop::futures::executor()</code></a>:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::EventLoop;
 </span><span class="boring">
-</span><span class="boring">// futures = &quot;0.3&quot;
 </span><span class="boring">use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; std::io::Result&lt;()&gt; {
@@ -763,10 +767,12 @@ version = ...
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span><span class="boring">    let (sender, receiver) = std::os::unix::net::UnixStream::pair().unwrap();
 </span><span class="boring">    let mut sender = handle.adapt_io(sender).unwrap();
@@ -802,7 +808,6 @@ version = ...
 <p>The <em>executor</em> goes in the event loop:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::EventLoop;
 </span><span class="boring">
-</span><span class="boring">// futures = &quot;0.3&quot;
 </span><span class="boring">use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; std::io::Result&lt;()&gt; {
@@ -811,10 +816,12 @@ version = ...
 </span>    let mut event_loop = EventLoop::try_new()?;
     let handle = event_loop.handle();
 
-    handle.insert_source(exec, |evt, _metadata, _shared| {
-        // Print the value of the async block ie. the return value.
-        println!(&quot;Async block ended with: {}&quot;, evt);
-    })?;
+    handle
+        .insert_source(exec, |evt, _metadata, _shared| {
+            // Print the value of the async block ie. the return value.
+            println!(&quot;Async block ended with: {}&quot;, evt);
+        })
+        .map_err(|e| e.error)?;
 <span class="boring">
 </span><span class="boring">    let (sender, receiver) = std::os::unix::net::UnixStream::pair().unwrap();
 </span><span class="boring">    let mut sender = handle.adapt_io(sender).unwrap();
@@ -850,7 +857,6 @@ version = ...
 <p>For our blocking IO types, let's use an unnamed pair of <a href="https://doc.rust-lang.org/stable/std/os/unix/net/struct.UnixStream.html">Unix domain stream sockets</a>. To convert them to async types, we simply call <a href="api/calloop/struct.LoopHandle.html"><code>calloop::LoopHandle::adapt_io()</code></a>:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::EventLoop;
 </span><span class="boring">
-</span><span class="boring">// futures = &quot;0.3&quot;
 </span><span class="boring">use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; std::io::Result&lt;()&gt; {
@@ -859,10 +865,12 @@ version = ...
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span>    let (sender, receiver) = std::os::unix::net::UnixStream::pair().unwrap();
     let mut sender = handle.adapt_io(sender).unwrap();
@@ -898,8 +906,7 @@ version = ...
 <p>Note that most of the useful async functionality for the returned type is expressed through various traits in <a href="https://docs.rs/futures/0.3/futures/io/"><code>futures::io</code></a>. So we need to explicitly <code>use</code> these:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::EventLoop;
 </span><span class="boring">
-</span>// futures = &quot;0.3&quot;
-use futures::io::{AsyncReadExt, AsyncWriteExt};
+</span>use futures::io::{AsyncReadExt, AsyncWriteExt};
 <span class="boring">
 </span><span class="boring">fn main() -&gt; std::io::Result&lt;()&gt; {
 </span><span class="boring">    let (exec, sched) = calloop::futures::executor()?;
@@ -907,10 +914,12 @@ use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span><span class="boring">    let (sender, receiver) = std::os::unix::net::UnixStream::pair().unwrap();
 </span><span class="boring">    let mut sender = handle.adapt_io(sender).unwrap();
@@ -946,7 +955,6 @@ use futures::io::{AsyncReadExt, AsyncWriteExt};
 <p>We can now write async code around these types. Here's the receiving code:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::EventLoop;
 </span><span class="boring">
-</span><span class="boring">// futures = &quot;0.3&quot;
 </span><span class="boring">use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; std::io::Result&lt;()&gt; {
@@ -955,10 +963,12 @@ use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span><span class="boring">    let (sender, receiver) = std::os::unix::net::UnixStream::pair().unwrap();
 </span><span class="boring">    let mut sender = handle.adapt_io(sender).unwrap();
@@ -994,7 +1004,6 @@ use futures::io::{AsyncReadExt, AsyncWriteExt};
 <p>And here's the sending code. The receiving and sending code can be created and added to the executor in either order.</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::EventLoop;
 </span><span class="boring">
-</span><span class="boring">// futures = &quot;0.3&quot;
 </span><span class="boring">use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; std::io::Result&lt;()&gt; {
@@ -1003,10 +1012,12 @@ use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span><span class="boring">    let (sender, receiver) = std::os::unix::net::UnixStream::pair().unwrap();
 </span><span class="boring">    let mut sender = handle.adapt_io(sender).unwrap();
@@ -1042,7 +1053,6 @@ use futures::io::{AsyncReadExt, AsyncWriteExt};
 <p>All that's left is to run the loop:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::EventLoop;
 </span><span class="boring">
-</span><span class="boring">// futures = &quot;0.3&quot;
 </span><span class="boring">use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; std::io::Result&lt;()&gt; {
@@ -1051,10 +1061,12 @@ use futures::io::{AsyncReadExt, AsyncWriteExt};
 </span><span class="boring">    let mut event_loop = EventLoop::try_new()?;
 </span><span class="boring">    let handle = event_loop.handle();
 </span><span class="boring">
-</span><span class="boring">    handle.insert_source(exec, |evt, _metadata, _shared| {
-</span><span class="boring">        // Print the value of the async block ie. the return value.
-</span><span class="boring">        println!(&quot;Async block ended with: {}&quot;, evt);
-</span><span class="boring">    })?;
+</span><span class="boring">    handle
+</span><span class="boring">        .insert_source(exec, |evt, _metadata, _shared| {
+</span><span class="boring">            // Print the value of the async block ie. the return value.
+</span><span class="boring">            println!(&quot;Async block ended with: {}&quot;, evt);
+</span><span class="boring">        })
+</span><span class="boring">        .map_err(|e| e.error)?;
 </span><span class="boring">
 </span><span class="boring">    let (sender, receiver) = std::os::unix::net::UnixStream::pair().unwrap();
 </span><span class="boring">    let mut sender = handle.adapt_io(sender).unwrap();
@@ -1146,7 +1158,7 @@ Async block ended with: Hello, world
 <pre><code class="language-rust noplayground">pub struct ZeroMQSource
 {
     // Calloop components.
-    socket_source: calloop::generic::Generic&lt;calloop::generic::Fd&gt;,
+    socket_source: calloop::generic::Generic&lt;std::os::unix::io::RawFd&gt;,
     mpsc_receiver: calloop::channel::Channel&lt;?&gt;,
     wake_ping_receiver: calloop::ping::PingSource,
 }
@@ -1156,7 +1168,7 @@ Async block ended with: Hello, world
 <pre><code class="language-rust noplayground">pub struct ZeroMQSource
 {
     // Calloop components.
-    socket_source: calloop::generic::Generic&lt;calloop::generic::Fd&gt;,
+    socket_source: calloop::generic::Generic&lt;std::os::unix::io::RawFd&gt;,
     mpsc_receiver: calloop::channel::Channel&lt;?&gt;,
     wake_ping_receiver: calloop::ping::PingSource,
 
@@ -1184,7 +1196,7 @@ where
 <p>Remember that it's not just <code>Vec&lt;T&gt;</code> and other sequence types that implement <code>IntoIterator</code> — <code>Option&lt;T&gt;</code> implements it too! There is also <code>std::iter::Once&lt;T&gt;</code>. So if a user of our API wants to enforce that all &quot;multi&quot;-part messages actually contain exactly one part, they can use this API with <code>T</code> being, say, <code>std::iter::Once&lt;zmq::Message&gt;</code> (or even just <code>[zmq::Message; 1]</code> in Rust 2021 edition).</p>
 </blockquote>
 <h2 id="associated-types"><a class="header" href="#associated-types">Associated types</a></h2>
-<p>The <code>EventSource</code> trait has three associated types:</p>
+<p>The <code>EventSource</code> trait has four associated types:</p>
 <ul>
 <li>
 <p><code>Event</code> - when an event is generated that our caller cares about (ie. not some internal thing), this is the data we provide to their callback. This will be another sequence of messages, but because we're constructing it we can be more opinionated about the type and use the return type of <code>zmq::Socket::recv_multipart()</code> which is <code>Vec&lt;Vec&lt;u8&gt;&gt;</code>.</p>
@@ -1194,6 +1206,9 @@ where
 </li>
 <li>
 <p><code>Ret</code> - this is the return type of the callback that's called on an event. Usually this will be a <code>Result</code> of some sort; in our case it's <code>std::io::Result&lt;()&gt;</code> just to signal whether some underlying operation failed or not.</p>
+</li>
+<li>
+<p><code>Error</code> - this is the error type returned by <code>process_events()</code> (not the user callback!). Having this as an associated type allows you to have more control over error propagation in nested event sources. We will use <a href="https://crates.io/crates/anyhow">Anyhow</a>, which is like a more fully-features <code>Box&lt;dyn Error&gt;</code>. It allows you to add context to any other error with a <code>context()</code> method.</p>
 </li>
 </ul>
 <p>So together these are:</p>
@@ -1205,6 +1220,7 @@ where
     type Event = Vec&lt;Vec&lt;u8&gt;&gt;;
     type Metadata = ();
     type Ret = io::Result&lt;()&gt;;
+    type Error = anyhow::Error;
     // ...
 }
 </code></pre>
@@ -1241,9 +1257,9 @@ pub fn from_socket(socket: zmq::Socket) -&gt; io::Result&lt;(Self, calloop::chan
 <h2 id="trait-methods-registering-sources"><a class="header" href="#trait-methods-registering-sources">Trait methods: registering sources</a></h2>
 <p>Calloop's event sources have a kind of life cycle, starting with <em>registration</em>. When you add an event source to the event loop, under the hood the source will <em>register</em> itself with the loop. Under certain circumstances a source will need to re-register itself. And finally there is the <em>unregister</em> action when an event source is removed from the loop. These are expressed via the <code>calloop::EventSource</code> methods:</p>
 <ul>
-<li><code>fn register(&amp;mut self, poll: &amp;mut calloop::Poll, token_factory: &amp;mut calloop::TokenFactory) -&gt; std::io::Result&lt;()&gt;</code></li>
-<li><code>fn reregister(&amp;mut self, poll: &amp;mut calloop::Poll, token_factory: &amp;mut calloop::TokenFactory) -&gt; std::io::Result&lt;()&gt;</code></li>
-<li><code>fn unregister(&amp;mut self, poll: &amp;mut calloop::Poll) -&gt; std::io::Result&lt;()&gt;</code></li>
+<li><code>fn register(&amp;mut self, poll: &amp;mut calloop::Poll, token_factory: &amp;mut calloop::TokenFactory) -&gt; calloop::Result&lt;()&gt;</code></li>
+<li><code>fn reregister(&amp;mut self, poll: &amp;mut calloop::Poll, token_factory: &amp;mut calloop::TokenFactory) -&gt; calloop::Result&lt;()&gt;</code></li>
+<li><code>fn unregister(&amp;mut self, poll: &amp;mut calloop::Poll) -&gt; calloop::Result&lt;()&gt;</code></li>
 </ul>
 <p>The first two methods take a <em>token factory</em>, which is a way for Calloop to keep track of why your source was woken up. When we get to actually processing events, you'll see how this works. But for now, all you need to do is recursively pass the token factory into whatever sources your own event source is composed of. This includes other composed sources, which will pass the token factory into <em>their</em> sources, and so on.</p>
 <p>In practise this looks like:</p>
@@ -1251,7 +1267,7 @@ pub fn from_socket(socket: zmq::Socket) -&gt; io::Result&lt;(Self, calloop::chan
     &amp;mut self,
     poll: &amp;mut calloop::Poll,
     token_factory: &amp;mut calloop::TokenFactory
-) -&gt; io::Result&lt;()&gt;
+) -&gt; calloop::Result&lt;()&gt;
 {
     self.socket_source.register(poll, token_factory)?;
     self.mpsc_receiver.register(poll, token_factory)?;
@@ -1265,7 +1281,7 @@ fn reregister(
     &amp;mut self,
     poll: &amp;mut calloop::Poll,
     token_factory: &amp;mut calloop::TokenFactory
-) -&gt; io::Result&lt;()&gt;
+) -&gt; calloop::Result&lt;()&gt;
 {
     self.socket_source.reregister(poll, token_factory)?;
     self.mpsc_receiver.reregister(poll, token_factory)?;
@@ -1277,7 +1293,7 @@ fn reregister(
 }
 
 
-fn unregister(&amp;mut self, poll: &amp;mut calloop::Poll)-&gt; std::io::Result&lt;()&gt; {
+fn unregister(&amp;mut self, poll: &amp;mut calloop::Poll)-&gt; calloop::Result&lt;()&gt; {
     self.socket_source.unregister(poll)?;
     self.mpsc_receiver.unregister(poll)?;
     self.wake_ping_receiver.unregister(poll)?;
@@ -1319,7 +1335,7 @@ where
     readiness: calloop::Readiness,
     token: calloop::Token,
     mut callback: F,
-) -&gt; io::Result&lt;calloop::PostAction&gt;
+) -&gt; Result&lt;calloop::PostAction, Self::Error&gt;
 where
     F: FnMut(Self::Event, &amp;mut Self::Metadata) -&gt; Self::Ret,
 </code></pre>
@@ -1344,19 +1360,21 @@ where
 <p>Note that these <code>PostAction</code> values correspond to various methods on the <code>LoopHandle</code> type (eg. <code>PostAction::Disable</code> does the same as <code>LoopHandle::disable()</code>). Whether you control your event source by returning a <code>PostAction</code> or using the <code>LoopHandle</code> methods depends on whether it makes more sense for these actions to be taken from within your event source or by something else in your code.</p>
 <p>Implementing <code>process_events()</code> for a type that contains various Calloop sources composed together, like we have, is done recursively by calling our internal sources' <code>process_events()</code> method. The <code>token</code> that Calloop gives us is how each event source determines whether it was responsible for the wakeup and has events to process.</p>
 <p>If we were woken up because of the ping source, then the ping source's <code>process_events()</code> will see that the token matches its own, and call the callback (possibly multiple times). If we were woken up because a message was sent through the MPSC channel, then the channel's <code>process_events()</code> will match on the token instead and call the callback for every message waiting. The zsocket is a little different, and we'll go over that in detail.</p>
+<p>For error handling we're using <a href="https://crates.io/crates/anyhow">Anyhow</a>, hence the <code>context()</code> calls on each fallible operation. These just add a message to any error that might appear in a traceback.</p>
 <p>So a first draft of our code might look like:</p>
 <pre><code class="language-rust noplayground">fn process_events&lt;F&gt;(
     &amp;mut self,
     readiness: calloop::Readiness,
     token: calloop::Token,
     mut callback: F,
-) -&gt; io::Result&lt;calloop::PostAction&gt;
+) -&gt; Result&lt;calloop::PostAction, Self::Error&gt;
 where
     F: FnMut(Self::Event, &amp;mut Self::Metadata) -&gt; Self::Ret,
 {
     // Runs if we were woken up on startup/registration.
     self.wake_ping_receiver
-        .process_events(readiness, token, |_, _| {})?;
+        .process_events(readiness, token, |_, _| {})
+        .context(&quot;Failed after registration&quot;)?;
 
     // Runs if we received a message over the MPSC channel.
     self.mpsc_receiver
@@ -1364,22 +1382,32 @@ where
             // 'evt' could be a message or a &quot;sending end closed&quot;
             // notification. We don't care about the latter.
             if let calloop::channel::Event::Msg(msg) = evt {
-                self.socket.send_multipart(msg, 0)?;
+                self.socket
+                    .send_multipart(msg, 0)
+                    .context(&quot;Failed to send message&quot;)?;
             }
         })?;
 
 	// Runs if the zsocket became read/write-able.
     self.socket
         .process_events(readiness, token, |_, _| {
-            let events = self.socket.get_events()?;
+            let events =
+                self.socket
+                    .get_events()
+                    .context(&quot;Failed to read ZeroMQ events&quot;)?;
         
             if events.contains(zmq::POLLOUT) {
                 // Wait, what do we do here?
             }
 
             if events.contains(zmq::POLLIN) {
-                let messages = self.socket.recv_multipart(0)?;
-                callback(messages, &amp;mut ())?;
+                let messages =
+                    self.socket
+                        .recv_multipart(0)
+                        .context(&quot;Failed to receive message&quot;)?;
+
+                callback(messages, &amp;mut ())
+                    .context(&quot;Error in event callback&quot;)?;
             }
         })?;
 
@@ -1394,7 +1422,9 @@ where
 <pre><code class="language-rust noplayground">self.mpsc_receiver
     .process_events(readiness, token, |evt, _| {
         if let calloop::channel::Event::Msg(msg) = evt {
-            self.socket.send_multipart(msg, 0)?;
+            self.socket
+                .send_multipart(msg, 0)
+                .context(&quot;Failed to send message&quot;)?;
         }
     })?;
 </code></pre>
@@ -1407,7 +1437,7 @@ where
     T::Item: Into&lt;zmq::Message&gt;,
 {
     // Calloop components.
-    socket_source: calloop::generic::Generic&lt;calloop::generic::Fd&gt;,
+    socket_source: calloop::generic::Generic&lt;std::os::unix::io::RawFd&gt;,
     mpsc_receiver: calloop::channel::Channel&lt;T&gt;,
     wake_ping_receiver: calloop::ping::PingSource,
 
@@ -1434,18 +1464,26 @@ self.mpsc_receiver
 <p>And our &quot;zsocket is writeable&quot; code becomes:</p>
 <pre><code class="language-rust noplayground">self.socket
     .process_events(readiness, token, |_, _| {
-        let events = self.socket.get_events()?;
+        let events = self
+            .socket
+            .get_events()
+            .context(&quot;Failed to read ZeroMQ events&quot;)?;
     
         if events.contains(zmq::POLLOUT) {
             if let Some(parts) = self.outbox.pop_front() {
                 self.socket
-                    .send_multipart(parts, 0)?;
+                    .send_multipart(parts, 0)
+                    .context(&quot;Failed to send message&quot;)?;
             }
        }
 
         if events.contains(zmq::POLLIN) {
-            let messages = self.socket.recv_multipart(0)?;
-            callback(messages, &amp;mut ())?;
+            let messages =
+                self.socket
+                    .recv_multipart(0)
+                    .context(&quot;Failed to receive message&quot;)?;
+            callback(messages, &amp;mut ())
+                .context(&quot;Error in event callback&quot;)?;
         }
     })?;
 
@@ -1454,18 +1492,26 @@ self.mpsc_receiver
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="creating-our-source-part-iv-processing-events-really"><a class="header" href="#creating-our-source-part-iv-processing-events-really">Creating our source, part IV: processing events (really)</a></h1>
 <p>We have three events that could wake up our event source: the ping, the channel, and the zsocket itself becoming ready to use. <em>All three of these reasons</em> potentially mean doing something on the zsocket: if the ping fired, we need to check for any pending events. If the channel received a message, we want to check if the zsocket is already readable and send it. If the zsocket becomes readable or writeable, we want to read from or write to it. In other words... We want to run it every time!</p>
 <p>Also notice that in the zsocket <code>process_events()</code> call, we don't use any of the arguments, including the event itself. That file descriptor is merely a signalling mechanism! Sending and receiving messages is what will actually clear any pending events on it, and reset it to a state where it will wake the event loop later.</p>
-<pre><code class="language-rust noplayground">let events = self.socket.events()?;
+<pre><code class="language-rust noplayground">let events = self
+    .socket
+    .get_events()
+    .context(&quot;Failed to read ZeroMQ events&quot;)?;
 
 if events.contains(zmq::POLLOUT) {
     if let Some(parts) = self.outbox.pop_front() {
         self.socket
-            .send_multipart(parts, 0)?;
+            .send_multipart(parts, 0)
+            .context(&quot;Failed to send message&quot;)?;
     }
 }
 
 if events.contains(zmq::POLLIN) {
-    let messages = self.socket.recv_multipart(0)?;
-    callback(messages, &amp;mut ())?;
+    let messages =
+        self.socket
+            .recv_multipart(0)
+            .context(&quot;Failed to receive message&quot;)?;
+    callback(messages, &amp;mut ())
+        .context(&quot;Error in event callback&quot;)?;
 }
 </code></pre>
 <p>So the second draft of our <code>process_events()</code> function is now:</p>
@@ -1474,7 +1520,7 @@ if events.contains(zmq::POLLIN) {
     readiness: calloop::Readiness,
     token: calloop::Token,
     mut callback: F,
-) -&gt; io::Result&lt;calloop::PostAction&gt;
+) -&gt; Result&lt;calloop::PostAction, Self::Error&gt;
 where
     F: FnMut(Self::Event, &amp;mut Self::Metadata) -&gt; Self::Ret,
 {
@@ -1494,18 +1540,26 @@ where
 
 	// Always process any pending zsocket events.
 
-    let events = self.socket.get_events()?;
+    let events = self
+        .socket
+        .get_events()
+        .context(&quot;Failed to read ZeroMQ events&quot;)?;
 
     if events.contains(zmq::POLLOUT) {
         if let Some(parts) = self.outbox.pop_front() {
             self.socket
-                .send_multipart(parts, 0)?;
+                .send_multipart(parts, 0)
+                .context(&quot;Failed to send message&quot;)?;
         }
     }
 
     if events.contains(zmq::POLLIN) {
-        let messages = self.socket.recv_multipart(0)?;
-        callback(messages, &amp;mut ())?;
+        let messages =
+            self.socket
+                .recv_multipart(0)
+                .context(&quot;Failed to receive message&quot;)?;
+        callback(messages, &amp;mut ())
+            .context(&quot;Error in event callback&quot;)?;
     }
 
     Ok(calloop::PostAction::Continue)
@@ -1530,23 +1584,32 @@ where
 <p>For <em>this specific example</em>, it will suffice to re-read the zsocket events in between the <code>if</code> statements. Then when we get to the second <code>events</code> check, it will indeed contain <code>zmq::POLLIN</code> and receive the pending message. But this is not good enough for the general case! If we replace REQ with REP above, we'll get the opposite problem: our first check (for <code>POLLOUT</code>) will be false. Our second check (<code>POLLIN</code>) will be true. We'll receive a message, leave <code>process_events()</code>, and never wake up again.</p>
 <p>The full solution is to recognise that any user action on a ZeroMQ socket can cause the pending events to change, or just to remain active, without re-triggering the &quot;interface&quot; file descriptor. So we need to (a) do this repeatedly and (b) keep track of when we have or haven't performed an action on the zsocket. Here's one way to do it:</p>
 <pre><code class="language-rust noplayground">loop {
-    let events = self.socket.get_events()?;
+    let events = self
+        .socket
+        .get_events()
+        .context(&quot;Failed to read ZeroMQ events&quot;)?;
+
     let mut used_socket = false;
 
     if events.contains(zmq::POLLOUT) {
         if let Some(parts) = self.outbox.pop_front() {
             self.socket
                 .as_ref()
-                .send_multipart(parts, 0)?;
+                .send_multipart(parts, 0)
+                .context(&quot;Failed to send message&quot;)?;
             used_socket = true;
         }
     }
 
     if events.contains(zmq::POLLIN) {
-        let messages = self.socket.recv_multipart(0)?;
+        let messages =
+            self.socket
+                .recv_multipart(0)
+                .context(&quot;Failed to receive message&quot;)?;
         used_socket = true;
 
-        callback(messages, &amp;mut ())?;
+        callback(messages, &amp;mut ())
+            .context(&quot;Error in event callback&quot;)?;
     }
 
     if !used_socket {
@@ -1562,12 +1625,11 @@ where
 </blockquote>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="the-full-zeromq-event-source-code"><a class="header" href="#the-full-zeromq-event-source-code">The full ZeroMQ event source code</a></h1>
 <p>This is the full source code for a Calloop event source based on a ZeroMQ socket. You might find it useful as a kind of reference. Please read the <a href="ch03-00-a-full-example-zeromq.html#disclaimer">disclaimer at the start of this chapter</a> if you skipped straight here!</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>//! A Calloop event source implementation for ZeroMQ sockets.
+<pre><pre class="playground"><code class="language-rust edition2018">//! A Calloop event source implementation for ZeroMQ sockets.
 
-use std::{collections, io};
+use std::{collections, io, os::unix::io::RawFd};
+
+use anyhow::Context;
 
 /// A Calloop event source that contains a ZeroMQ socket (of any kind) and a
 /// Calloop MPSC channel for sending over it.
@@ -1613,7 +1675,7 @@ where
 {
     // Calloop components.
     /// Event source for ZeroMQ socket.
-    socket_source: calloop::generic::Generic&lt;calloop::generic::Fd&gt;,
+    socket_source: calloop::generic::Generic&lt;RawFd&gt;,
 
     /// Event source for channel.
     mpsc_receiver: calloop::channel::Channel&lt;T&gt;,
@@ -1648,7 +1710,7 @@ where
         let fd = socket.get_fd()?;
 
         let socket_source =
-            calloop::generic::Generic::from_fd(fd, calloop::Interest::READ, calloop::Mode::Edge);
+            calloop::generic::Generic::new(fd, calloop::Interest::READ, calloop::Mode::Edge);
 
         Ok((
             Self {
@@ -1685,19 +1747,21 @@ where
     type Event = Vec&lt;Vec&lt;u8&gt;&gt;;
     type Metadata = ();
     type Ret = io::Result&lt;()&gt;;
+    type Error = anyhow::Error;
 
     fn process_events&lt;F&gt;(
         &amp;mut self,
         readiness: calloop::Readiness,
         token: calloop::Token,
         mut callback: F,
-    ) -&gt; io::Result&lt;calloop::PostAction&gt;
+    ) -&gt; Result&lt;calloop::PostAction, Self::Error&gt;
     where
         F: FnMut(Self::Event, &amp;mut Self::Metadata) -&gt; Self::Ret,
     {
         // Runs if we were woken up on startup/registration.
         self.wake_ping_receiver
-            .process_events(readiness, token, |_, _| {})?;
+            .process_events(readiness, token, |_, _| {})
+            .context(&quot;Failed after registration&quot;)?;
 
         // Runs if we were woken up because a message was sent on the channel.
         let outbox = &amp;mut self.outbox;
@@ -1707,7 +1771,8 @@ where
                 if let calloop::channel::Event::Msg(msg) = evt {
                     outbox.push_back(msg);
                 }
-            })?;
+            })
+            .context(&quot;Failed to processing outgoing messages&quot;)?;
 
         // The ZeroMQ file descriptor is edge triggered. This means that if (a)
         // messages are added to the queue before registration, or (b) the
@@ -1724,12 +1789,18 @@ where
             // or receiving on the socket while processing such an event. The
             // &quot;used_socket&quot; flag below tracks whether we perform an operation
             // on the socket that warrants reading the events again.
-            let events = self.socket.get_events()?;
+            let events = self
+                .socket
+                .get_events()
+                .context(&quot;Failed to read ZeroMQ events&quot;)?;
+
             let mut used_socket = false;
 
             if events.contains(zmq::POLLOUT) {
                 if let Some(parts) = self.outbox.pop_front() {
-                    self.socket.send_multipart(parts, 0)?;
+                    self.socket
+                        .send_multipart(parts, 0)
+                        .context(&quot;Failed to send message&quot;)?;
                     used_socket = true;
                 }
             }
@@ -1737,12 +1808,15 @@ where
             if events.contains(zmq::POLLIN) {
                 // Batch up multipart messages. ZeroMQ guarantees atomic message
                 // sending, which includes all parts of a multipart message.
-                let messages = self.socket.recv_multipart(0)?;
+                let messages = self
+                    .socket
+                    .recv_multipart(0)
+                    .context(&quot;Failed to receive message&quot;)?;
                 used_socket = true;
 
                 // Capture and report errors from the callback, but don't propagate
                 // them up.
-                callback(messages, &amp;mut ())?;
+                callback(messages, &amp;mut ()).context(&quot;Error in event callback&quot;)?;
             }
 
             if !used_socket {
@@ -1757,7 +1831,7 @@ where
         &amp;mut self,
         poll: &amp;mut calloop::Poll,
         token_factory: &amp;mut calloop::TokenFactory,
-    ) -&gt; io::Result&lt;()&gt; {
+    ) -&gt; calloop::Result&lt;()&gt; {
         self.socket_source.register(poll, token_factory)?;
         self.mpsc_receiver.register(poll, token_factory)?;
         self.wake_ping_receiver.register(poll, token_factory)?;
@@ -1771,7 +1845,7 @@ where
         &amp;mut self,
         poll: &amp;mut calloop::Poll,
         token_factory: &amp;mut calloop::TokenFactory,
-    ) -&gt; io::Result&lt;()&gt; {
+    ) -&gt; calloop::Result&lt;()&gt; {
         self.socket_source.reregister(poll, token_factory)?;
         self.mpsc_receiver.reregister(poll, token_factory)?;
         self.wake_ping_receiver.reregister(poll, token_factory)?;
@@ -1781,7 +1855,7 @@ where
         Ok(())
     }
 
-    fn unregister(&amp;mut self, poll: &amp;mut calloop::Poll) -&gt; io::Result&lt;()&gt; {
+    fn unregister(&amp;mut self, poll: &amp;mut calloop::Poll) -&gt; calloop::Result&lt;()&gt; {
         self.socket_source.unregister(poll)?;
         self.mpsc_receiver.unregister(poll)?;
         self.wake_ping_receiver.unregister(poll)?;
@@ -1811,12 +1885,19 @@ where
         }
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
-<p>Dependencies are only <code>calloop</code> and <code>zmq</code>:</p>
+
+pub fn main() {}
+</code></pre></pre>
+<p>Dependencies are:</p>
+<ul>
+<li>calloop (whatever version this document was built from)</li>
+<li>zmq 0.9</li>
+<li>anyhow 1.0</li>
+</ul>
 <pre><code class="language-toml">[dependencies]
-calloop = &quot;0.8&quot;
+calloop = { path = '../..' }
 zmq = &quot;0.9&quot;
+anyhow = &quot;1.0&quot;
 </code></pre>
 
                     </main>
