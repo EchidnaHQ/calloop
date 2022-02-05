@@ -1643,15 +1643,15 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">change_interests</span>() {
-        <span class="kw">use</span> <span class="ident">nix::sys::socket</span>::{<span class="ident">socketpair</span>, <span class="ident">AddressFamily</span>, <span class="ident">SockFlag</span>, <span class="ident">SockType</span>};
-        <span class="kw">use</span> <span class="ident">nix::unistd</span>::{<span class="ident">read</span>, <span class="ident">write</span>};
+        <span class="kw">use</span> <span class="ident">nix::sys::socket</span>::{<span class="ident">recv</span>, <span class="ident">socketpair</span>, <span class="ident">AddressFamily</span>, <span class="ident">MsgFlags</span>, <span class="ident">SockFlag</span>, <span class="ident">SockType</span>};
+        <span class="kw">use</span> <span class="ident">nix::unistd::write</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_loop</span> <span class="op">=</span> <span class="ident">EventLoop</span>::<span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="ident">::try_new</span>().<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> (<span class="ident">sock1</span>, <span class="ident">sock2</span>) <span class="op">=</span> <span class="ident">socketpair</span>(
             <span class="ident">AddressFamily::Unix</span>,
             <span class="ident">SockType::Stream</span>,
             <span class="prelude-val">None</span>,
-            <span class="ident">SockFlag::SOCK_NONBLOCK</span>,
+            <span class="ident">SockFlag::empty</span>(), <span class="comment">// recv with DONTWAIT will suffice for platforms without SockFlag::SOCK_NONBLOCKING such as macOS</span>
         )
         .<span class="ident">unwrap</span>();
 
@@ -1661,7 +1661,7 @@
             <span class="comment">// read all contents available to drain the socket</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">32</span>];
             <span class="kw">loop</span> {
-                <span class="kw">match</span> <span class="ident">read</span>(<span class="ident">fd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">buf</span>) {
+                <span class="kw">match</span> <span class="ident">recv</span>(<span class="ident">fd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">buf</span>, <span class="ident">MsgFlags::MSG_DONTWAIT</span>) {
                     <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; <span class="kw">break</span>, <span class="comment">// closed pipe, we are now inert</span>
                     <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {}
                     <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {

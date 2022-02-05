@@ -215,6 +215,35 @@
 <span id="213">213</span>
 <span id="214">214</span>
 <span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Ping to the event loop</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This is an event source that just produces `()` events whevener the associated</span>
@@ -230,7 +259,7 @@
 
 <span class="kw">use</span> <span class="ident">nix</span>::{
     <span class="ident">fcntl::OFlag</span>,
-    <span class="ident">unistd</span>::{<span class="ident">close</span>, <span class="ident">pipe2</span>, <span class="ident">read</span>, <span class="ident">write</span>},
+    <span class="ident">unistd</span>::{<span class="ident">close</span>, <span class="ident">read</span>, <span class="ident">write</span>},
 };
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::generic::Generic</span>;
@@ -241,8 +270,37 @@
 <span class="doccomment">/// you are given a [`Ping`] instance, which can be cloned and used to ping the</span>
 <span class="doccomment">/// event loop, and a [`PingSource`], which you can insert in your event loop to</span>
 <span class="doccomment">/// receive the pings.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_ping</span>() -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>(<span class="ident">Ping</span>, <span class="ident">PingSource</span>)<span class="op">&gt;</span> {
-    <span class="kw">let</span> (<span class="ident">read</span>, <span class="ident">write</span>) <span class="op">=</span> <span class="ident">pipe2</span>(<span class="ident">OFlag::O_CLOEXEC</span> <span class="op">|</span> <span class="ident">OFlag::O_NONBLOCK</span>)<span class="question-mark">?</span>;
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_ping</span>() -&gt; <span class="ident">std::io::Result</span><span class="op">&lt;</span>(<span class="ident">Ping</span>, <span class="ident">PingSource</span>)<span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>))]</span>
+    <span class="kw">let</span> (<span class="ident">read</span>, <span class="ident">write</span>) <span class="op">=</span> {
+        <span class="kw">use</span> <span class="ident">nix::unistd::pipe2</span>;
+
+        <span class="ident">pipe2</span>(<span class="ident">OFlag::O_CLOEXEC</span> <span class="op">|</span> <span class="ident">OFlag::O_NONBLOCK</span>)<span class="question-mark">?</span>
+    };
+
+    <span class="comment">// macOS does not have pipe2, but we can emulate the behavior of pipe2 by setting the flags after calling pipe.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
+    <span class="kw">let</span> (<span class="ident">read</span>, <span class="ident">write</span>) <span class="op">=</span> {
+        <span class="kw">use</span> <span class="ident">nix</span>::{
+            <span class="ident">fcntl</span>::{<span class="ident">fcntl</span>, <span class="ident">FcntlArg</span>},
+            <span class="ident">unistd::pipe</span>,
+        };
+
+        <span class="kw">let</span> (<span class="ident">read</span>, <span class="ident">write</span>) <span class="op">=</span> <span class="ident">pipe</span>()<span class="question-mark">?</span>;
+
+        <span class="kw">let</span> <span class="ident">read_flags</span> <span class="op">=</span> <span class="ident">OFlag::from_bits_truncate</span>(<span class="ident">fcntl</span>(<span class="ident">read</span>, <span class="ident">FcntlArg::F_GETFD</span>)<span class="question-mark">?</span>)
+            <span class="op">|</span> <span class="ident">OFlag::O_CLOEXEC</span>
+            <span class="op">|</span> <span class="ident">OFlag::O_NONBLOCK</span>;
+        <span class="kw">let</span> <span class="ident">write_flags</span> <span class="op">=</span> <span class="ident">OFlag::from_bits_truncate</span>(<span class="ident">fcntl</span>(<span class="ident">write</span>, <span class="ident">FcntlArg::F_GETFD</span>)<span class="question-mark">?</span>)
+            <span class="op">|</span> <span class="ident">OFlag::O_CLOEXEC</span>
+            <span class="op">|</span> <span class="ident">OFlag::O_NONBLOCK</span>;
+
+        <span class="ident">fcntl</span>(<span class="ident">read</span>, <span class="ident">FcntlArg::F_SETFL</span>(<span class="ident">read_flags</span>))<span class="question-mark">?</span>;
+        <span class="ident">fcntl</span>(<span class="ident">write</span>, <span class="ident">FcntlArg::F_SETFL</span>(<span class="ident">write_flags</span>))<span class="question-mark">?</span>;
+
+        (<span class="ident">read</span>, <span class="ident">write</span>)
+    };
+
     <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">PingSource</span> {
         <span class="ident">pipe</span>: <span class="ident">Generic::new</span>(<span class="ident">read</span>, <span class="ident">Interest::READ</span>, <span class="ident">Mode::Level</span>),
     };
