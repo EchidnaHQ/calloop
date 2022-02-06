@@ -156,6 +156,7 @@
 <span id="154">154</span>
 <span id="155">155</span>
 <span id="156">156</span>
+<span id="157">157</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Calloop, a Callback-based Event Loop</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This crate provides an [`EventLoop`] type, which is a small abstraction</span>
@@ -298,6 +299,7 @@
 
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>, <span class="ident">missing_debug_implementations</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::needless_doctest_main</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
 
 <span class="kw">mod</span> <span class="ident">sys</span>;
 

@@ -442,6 +442,8 @@
 <span id="440">440</span>
 <span id="441">441</span>
 <span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Adapters for async IO objects</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module mainly hosts the [`Async`] adapter for making IO objects async with readiness</span>
@@ -710,6 +712,7 @@
  */</span>
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures-io&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures-io&quot;</span>)))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="ident">F</span>: <span class="ident">AsRawFd</span> <span class="op">+</span> <span class="ident">std::io::Read</span><span class="op">&gt;</span> <span class="ident">AsyncRead</span> <span class="kw">for</span> <span class="ident">Async</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="ident">F</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">poll_read</span>(
         <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
@@ -739,6 +742,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures-io&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures-io&quot;</span>)))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="ident">F</span>: <span class="ident">AsRawFd</span> <span class="op">+</span> <span class="ident">std::io::Write</span><span class="op">&gt;</span> <span class="ident">AsyncWrite</span> <span class="kw">for</span> <span class="ident">Async</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="ident">F</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">poll_write</span>(
         <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
