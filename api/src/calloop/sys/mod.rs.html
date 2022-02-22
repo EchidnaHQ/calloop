@@ -258,7 +258,82 @@
 <span id="256">256</span>
 <span id="257">257</span>
 <span id="258">258</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::os::unix::io::RawFd</span>;
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">os::unix::io::RawFd</span>};
+<span class="kw">use</span> <span class="ident">vec_map::VecMap</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::loop_logic::CalloopKey</span>;
 
@@ -283,7 +358,6 @@
     <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>
 ))]</span>
 <span class="kw">use</span> <span class="ident">kqueue::Kqueue</span> <span class="kw">as</span> <span class="ident">Poller</span>;
-<span class="kw">use</span> <span class="ident">slotmap::Key</span>;
 
 <span class="doccomment">/// Possible modes for registering a file descriptor</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
@@ -409,25 +483,6 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">sub_id</span>: <span class="ident">u32</span>,
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Token</span> {
-    <span class="doccomment">/// Produces an invalid Token, that is not recognized by the</span>
-    <span class="doccomment">/// event loop.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Can be used as a placeholder to avoid `Option&lt;Token&gt;`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invalid</span>() -&gt; <span class="ident">Token</span> {
-        <span class="ident">Token</span> {
-            <span class="ident">key</span>: <span class="ident">CalloopKey::null</span>(),
-            <span class="ident">sub_id</span>: <span class="ident">std::u32::MAX</span>,
-        }
-    }
-
-    <span class="doccomment">/// Check if this token is the invalid token</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_invalid</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">key</span>.<span class="ident">is_null</span>()
-    }
-}
-
 <span class="doccomment">/// The polling system</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This type represents the polling system of calloop, on which you</span>
@@ -440,6 +495,21 @@
 <span class="doccomment">/// source and delegate the implementations to it.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Poll</span> {
     <span class="ident">poller</span>: <span class="ident">Poller</span>,
+
+    <span class="comment">// It is essential for safe use of this type that the pointers passed in to</span>
+    <span class="comment">// the underlying poller API are properly managed. Each time an event source</span>
+    <span class="comment">// is registered, the token it passes in is Boxed and converted to a raw</span>
+    <span class="comment">// pointer to be passed to the polling system by FFI. This pointer is what&#39;s</span>
+    <span class="comment">// stored in the map. When the event source is re- or unregistered, the same</span>
+    <span class="comment">// raw pointer can then be converted back into the Box and dropped, safely</span>
+    <span class="comment">// deallocating it. To put it another way, we effectively &quot;own&quot; the Token</span>
+    <span class="comment">// memory on behalf of the underlying polling mechanism.</span>
+    <span class="comment">//</span>
+    <span class="comment">// All the platforms we currently support follow the rule that file</span>
+    <span class="comment">// descriptors must be &quot;small&quot;, positive integers. This means we can use a</span>
+    <span class="comment">// VecMap which has that exact constraint for its keys. If that ever</span>
+    <span class="comment">// changes, this will need to be changed to a different structure.</span>
+    <span class="ident">tokens</span>: <span class="ident">VecMap</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">Token</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Poll</span> {
@@ -452,6 +522,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="ident">Poll</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">Poll</span> {
             <span class="ident">poller</span>: <span class="ident">Poller::new</span>()<span class="question-mark">?</span>,
+            <span class="ident">tokens</span>: <span class="ident">VecMap::new</span>(),
         })
     }
 
@@ -469,21 +540,45 @@
     <span class="doccomment">/// bad file descriptor or if the provided file descriptor is already</span>
     <span class="doccomment">/// registered.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">/// # Leaking tokens</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// You must ensure that the `*const Token` pointer provided remains alive</span>
-    <span class="doccomment">/// until your event source is re-registered or unregistered.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">register</span>(
+    <span class="doccomment">/// If your event source is dropped without being unregistered, the token</span>
+    <span class="doccomment">/// passed in here will remain on the heap and continue to be used by the</span>
+    <span class="doccomment">/// polling system even though no event source will match it.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">fd</span>: <span class="ident">RawFd</span>,
         <span class="ident">interest</span>: <span class="ident">Interest</span>,
         <span class="ident">mode</span>: <span class="ident">Mode</span>,
-        <span class="ident">token</span>: <span class="kw-2">*const</span> <span class="ident">Token</span>,
+        <span class="ident">token</span>: <span class="ident">Token</span>,
     ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">token</span>).<span class="ident">is_invalid</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::Error::InvalidToken</span>);
+        <span class="kw">let</span> <span class="ident">token_box</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">token</span>);
+        <span class="kw">let</span> <span class="ident">token_ptr</span> <span class="op">=</span> <span class="ident">Box::into_raw</span>(<span class="ident">token_box</span>);
+
+        <span class="kw">let</span> <span class="ident">registration_result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">register</span>(<span class="ident">fd</span>, <span class="ident">interest</span>, <span class="ident">mode</span>, <span class="ident">token_ptr</span>);
+
+        <span class="kw">if</span> <span class="ident">registration_result</span>.<span class="ident">is_err</span>() {
+            <span class="comment">// If registration did not work, do not add the file descriptor to</span>
+            <span class="comment">// the token map. Instead, reconstruct the Box and drop it. This is</span>
+            <span class="comment">// safe because it&#39;s from Box::into_raw() above.</span>
+            <span class="kw">let</span> <span class="ident">token_box</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">token_ptr</span>) };
+            <span class="ident">std::mem::drop</span>(<span class="ident">token_box</span>);
+        } <span class="kw">else</span> {
+            <span class="comment">// Registration worked, keep the token pointer until it&#39;s replaced</span>
+            <span class="comment">// or removed.</span>
+            <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">index_from_fd</span>(<span class="ident">fd</span>);
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">tokens</span>.<span class="ident">insert</span>(<span class="ident">index</span>, <span class="ident">token_ptr</span>).<span class="ident">is_some</span>() {
+                <span class="comment">// If there is already a file descriptor associated with a</span>
+                <span class="comment">// token, then replacing that entry will leak the token, but</span>
+                <span class="comment">// converting it back into a Box might leave a dangling pointer</span>
+                <span class="comment">// somewhere. We can theoretically continue safely by choosing</span>
+                <span class="comment">// to leak, but one of our assumptions is no longer valid, so</span>
+                <span class="comment">// panic.</span>
+                <span class="macro">panic!</span>(<span class="string">&quot;File descriptor ({}) already registered&quot;</span>, <span class="ident">fd</span>);
+            }
         }
-        <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">register</span>(<span class="ident">fd</span>, <span class="ident">interest</span>, <span class="ident">mode</span>, <span class="ident">token</span>)
+
+        <span class="ident">registration_result</span>
     }
 
     <span class="doccomment">/// Update the registration for a file descriptor</span>
@@ -491,21 +586,46 @@
     <span class="doccomment">/// This allows you to change the interest, mode or token of a file</span>
     <span class="doccomment">/// descriptor. Fails if the provided fd is not currently registered.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// You must ensure that the `*const Token` pointer provided remains alive</span>
-    <span class="doccomment">/// until your event source is re-registered or unregistered.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">reregister</span>(
+    <span class="doccomment">/// See note on [`register()`] regarding leaking.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reregister</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">fd</span>: <span class="ident">RawFd</span>,
         <span class="ident">interest</span>: <span class="ident">Interest</span>,
         <span class="ident">mode</span>: <span class="ident">Mode</span>,
-        <span class="ident">token</span>: <span class="kw-2">*const</span> <span class="ident">Token</span>,
+        <span class="ident">token</span>: <span class="ident">Token</span>,
     ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">token</span>).<span class="ident">is_invalid</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::Error::InvalidToken</span>);
+        <span class="kw">let</span> <span class="ident">token_box</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">token</span>);
+        <span class="kw">let</span> <span class="ident">token_ptr</span> <span class="op">=</span> <span class="ident">Box::into_raw</span>(<span class="ident">token_box</span>);
+
+        <span class="kw">let</span> <span class="ident">reregistration_result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">reregister</span>(<span class="ident">fd</span>, <span class="ident">interest</span>, <span class="ident">mode</span>, <span class="ident">token_ptr</span>);
+
+        <span class="kw">if</span> <span class="ident">reregistration_result</span>.<span class="ident">is_err</span>() {
+            <span class="comment">// If registration did not work, do not add the file descriptor to</span>
+            <span class="comment">// the token map. Instead, reconstruct the Box and drop it. This is</span>
+            <span class="comment">// safe because it&#39;s from Box::into_raw() above.</span>
+            <span class="kw">let</span> <span class="ident">token_box</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">token_ptr</span>) };
+            <span class="ident">std::mem::drop</span>(<span class="ident">token_box</span>);
+        } <span class="kw">else</span> {
+            <span class="comment">// Registration worked, drop the old token memory and keep the new</span>
+            <span class="comment">// token pointer until it&#39;s replaced or removed.</span>
+            <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">index_from_fd</span>(<span class="ident">fd</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">previous</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">tokens</span>.<span class="ident">insert</span>(<span class="ident">index</span>, <span class="ident">token_ptr</span>) {
+                <span class="comment">// This is safe because it&#39;s from Box::into_raw() from a</span>
+                <span class="comment">// previous (re-)register() call.</span>
+                <span class="kw">let</span> <span class="ident">token_box</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">previous</span>) };
+                <span class="ident">std::mem::drop</span>(<span class="ident">token_box</span>);
+            } <span class="kw">else</span> {
+                <span class="comment">// If there is no previous token registered for this file</span>
+                <span class="comment">// descriptor, either the event source has wrongly called</span>
+                <span class="comment">// reregister() without first being registered, or the</span>
+                <span class="comment">// underlying poller has a dangling pointer. In the first case,</span>
+                <span class="comment">// the reregistration should have failed; in the second case, we</span>
+                <span class="comment">// cannot safely proceed.</span>
+                <span class="macro">panic!</span>(<span class="string">&quot;File descriptor ({}) had no previous registration&quot;</span>, <span class="ident">fd</span>);
+            }
         }
-        <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">reregister</span>(<span class="ident">fd</span>, <span class="ident">interest</span>, <span class="ident">mode</span>, <span class="ident">token</span>)
+
+        <span class="ident">reregistration_result</span>
     }
 
     <span class="doccomment">/// Unregister a file descriptor</span>
@@ -513,8 +633,36 @@
     <span class="doccomment">/// This file descriptor will no longer generate events. Fails if the</span>
     <span class="doccomment">/// provided file descriptor is not currently registered.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">fd</span>: <span class="ident">RawFd</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">unregister</span>(<span class="ident">fd</span>)
+        <span class="kw">let</span> <span class="ident">unregistration_result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poller</span>.<span class="ident">unregister</span>(<span class="ident">fd</span>);
+
+        <span class="kw">if</span> <span class="ident">unregistration_result</span>.<span class="ident">is_ok</span>() {
+            <span class="comment">// The source was unregistered, we can remove the old token data.</span>
+            <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">index_from_fd</span>(<span class="ident">fd</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">previous</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">tokens</span>.<span class="ident">remove</span>(<span class="ident">index</span>) {
+                <span class="comment">// This is safe because it&#39;s from Box::into_raw() from a</span>
+                <span class="comment">// previous (re-)register() call.</span>
+                <span class="kw">let</span> <span class="ident">token_box</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">previous</span>) };
+                <span class="ident">std::mem::drop</span>(<span class="ident">token_box</span>);
+            } <span class="kw">else</span> {
+                <span class="comment">// If there is no previous token registered for this file</span>
+                <span class="comment">// descriptor, either the event source has wrongly called</span>
+                <span class="comment">// unregister() without first being registered, or the</span>
+                <span class="comment">// underlying poller has a dangling pointer. In the first case,</span>
+                <span class="comment">// the reregistration should have failed; in the second case, we</span>
+                <span class="comment">// cannot safely proceed.</span>
+                <span class="macro">panic!</span>(<span class="string">&quot;File descriptor ({}) had no previous registration&quot;</span>, <span class="ident">fd</span>);
+            }
+        }
+
+        <span class="ident">unregistration_result</span>
     }
+}
+
+<span class="doccomment">/// Converts a file descriptor into an index for the token map. Panics if the</span>
+<span class="doccomment">/// file descriptor is negative.</span>
+<span class="kw">fn</span> <span class="ident">index_from_fd</span>(<span class="ident">fd</span>: <span class="ident">RawFd</span>) -&gt; <span class="ident">usize</span> {
+    <span class="ident">fd</span>.<span class="ident">try_into</span>()
+        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;File descriptor ({}) is invalid&quot;</span>, <span class="ident">fd</span>))
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-beta.8 (1945ce657 2022-02-12)" ></div>
