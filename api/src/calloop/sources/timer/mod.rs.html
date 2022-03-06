@@ -482,6 +482,26 @@
 <span id="477">477</span>
 <span id="478">478</span>
 <span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Timer-based event sources</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! A [`Timer&lt;T&gt;`](Timer) is a general time-tracking object. It is used by setting timeouts,</span>
@@ -827,6 +847,26 @@
         <span class="ident">event_loop</span>.<span class="ident">dispatch</span>(<span class="prelude-val">None</span>, <span class="kw-2">&amp;mut</span> <span class="ident">fired</span>).<span class="ident">unwrap</span>();
 
         <span class="comment">// it should have fired now</span>
+        <span class="macro">assert!</span>(<span class="ident">fired</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">instant_timer</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_loop</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::EventLoop::try_new</span>().<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="ident">evl_handle</span> <span class="op">=</span> <span class="ident">event_loop</span>.<span class="ident">handle</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fired</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">let</span> <span class="ident">timer</span> <span class="op">=</span> <span class="ident">Timer</span>::<span class="op">&lt;</span>()<span class="op">&gt;</span><span class="ident">::new</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">timer_handle</span> <span class="op">=</span> <span class="ident">timer</span>.<span class="ident">handle</span>();
+        <span class="ident">evl_handle</span>
+            .<span class="ident">insert_source</span>(<span class="ident">timer</span>, <span class="kw">move</span> <span class="op">|</span>(), <span class="kw">_</span>, <span class="ident">f</span><span class="op">|</span> {
+                <span class="kw-2">*</span><span class="ident">f</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            })
+            .<span class="ident">unwrap</span>();
+        <span class="ident">timer_handle</span>.<span class="ident">add_timeout</span>(<span class="ident">Duration::from_nanos</span>(<span class="number">0</span>), ());
+        <span class="ident">event_loop</span>.<span class="ident">dispatch</span>(<span class="prelude-val">None</span>, <span class="kw-2">&amp;mut</span> <span class="ident">fired</span>).<span class="ident">unwrap</span>();
+
+        <span class="comment">// The timer should fire right away.</span>
         <span class="macro">assert!</span>(<span class="ident">fired</span>);
     }
 
