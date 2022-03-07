@@ -214,10 +214,24 @@
 <span id="209">209</span>
 <span id="210">210</span>
 <span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Macros for helping with common operations in Calloop.</span>
 
 <span class="doccomment">/// Register a set of event sources. Effectively calls</span>
-<span class="doccomment">/// [`EventSource::register()`] for all the sources provided. Usage:</span>
+<span class="doccomment">/// [`EventSource::register()`] for all the sources provided.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Usage:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```none,actually-rust-but-see-https://github.com/rust-lang/rust/issues/63193</span>
 <span class="doccomment">/// calloop::batch_register!(</span>
@@ -233,6 +247,8 @@
 <span class="doccomment">/// things with a particular source, you&#39;ll need to leave it off the list. Also</span>
 <span class="doccomment">/// note that this only does try-or-early-return error handling in the order</span>
 <span class="doccomment">/// that you list the sources; if you need anything else, don&#39;t use this macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`EventSource::register()`]: crate::EventSource::register()</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">batch_register</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">poll</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">token_fac</span>:<span class="ident">ident</span>, $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span>:<span class="ident">expr</span> ),<span class="op">*</span> $(,)<span class="question-mark">?</span>) =&gt; {
@@ -246,7 +262,9 @@
 }
 
 <span class="doccomment">/// Reregister a set of event sources. Effectively calls</span>
-<span class="doccomment">/// [`EventSource::reregister()`] for all the sources provided. Usage:</span>
+<span class="doccomment">/// [`EventSource::reregister()`] for all the sources provided.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Usage:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```none,actually-rust-but-see-https://github.com/rust-lang/rust/issues/63193</span>
 <span class="doccomment">/// calloop::batch_reregister!(</span>
@@ -262,6 +280,8 @@
 <span class="doccomment">/// things with a particular source, you&#39;ll need to leave it off the list. Also</span>
 <span class="doccomment">/// note that this only does try-or-early-return error handling in the order</span>
 <span class="doccomment">/// that you list the sources; if you need anything else, don&#39;t use this macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`EventSource::reregister()`]: crate::EventSource::reregister()</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">batch_reregister</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">poll</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">token_fac</span>:<span class="ident">ident</span>, $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span>:<span class="ident">expr</span> ),<span class="op">*</span> $(,)<span class="question-mark">?</span>) =&gt; {
@@ -275,7 +295,9 @@
 }
 
 <span class="doccomment">/// Unregister a set of event sources. Effectively calls</span>
-<span class="doccomment">/// [`EventSource::unregister()`] for all the sources provided. Usage:</span>
+<span class="doccomment">/// [`EventSource::unregister()`] for all the sources provided.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Usage:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```none,actually-rust-but-see-https://github.com/rust-lang/rust/issues/63193</span>
 <span class="doccomment">/// calloop::batch_unregister!(</span>
@@ -291,6 +313,8 @@
 <span class="doccomment">/// things with a particular source, you&#39;ll need to leave it off the list. Also</span>
 <span class="doccomment">/// note that this only does try-or-early-return error handling in the order</span>
 <span class="doccomment">/// that you list the sources; if you need anything else, don&#39;t use this macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`EventSource::unregister()`]: crate::EventSource::unregister()</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">batch_unregister</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">poll</span>:<span class="ident">ident</span>, $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span>:<span class="ident">expr</span> ),<span class="op">*</span> $(,)<span class="question-mark">?</span>) =&gt; {

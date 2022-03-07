@@ -589,7 +589,7 @@
     <span class="doccomment">/// This allows you to change the interest, mode or token of a file</span>
     <span class="doccomment">/// descriptor. Fails if the provided fd is not currently registered.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See note on [`register()`] regarding leaking.</span>
+    <span class="doccomment">/// See note on [`register()`](Self::register()) regarding leaking.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reregister</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">fd</span>: <span class="ident">RawFd</span>,

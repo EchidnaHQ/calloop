@@ -379,7 +379,7 @@
 <span class="doccomment">/// An error arising from processing events in an async executor event source.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ExecutorError</span> {
-    <span class="doccomment">/// Error while reading new futures added via [`Executor::schedule()`].</span>
+    <span class="doccomment">/// Error while reading new futures added via [`Scheduler::schedule()`].</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;error adding new futures&quot;</span>)]</span>
     <span class="ident">NewFutureError</span>(<span class="ident">ChannelError</span>),
 
