@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["calloop"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/beta/core/ops/bit/trait.BitOrAssign.html\" title=\"trait core::ops::bit::BitOrAssign\">BitOrAssign</a>&lt;<a class=\"enum\" href=\"calloop/enum.PostAction.html\" title=\"enum calloop::PostAction\">PostAction</a>&gt; for <a class=\"enum\" href=\"calloop/enum.PostAction.html\" title=\"enum calloop::PostAction\">PostAction</a>","synthetic":false,"types":["calloop::sources::PostAction"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

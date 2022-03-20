@@ -586,8 +586,138 @@
 <span id="581">581</span>
 <span id="582">582</span>
 <span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">cell</span>::{<span class="ident">Ref</span>, <span class="ident">RefCell</span>, <span class="ident">RefMut</span>},
+    <span class="ident">ops</span>::{<span class="ident">BitOr</span>, <span class="ident">BitOrAssign</span>},
     <span class="ident">rc::Rc</span>,
 };
 
@@ -606,8 +736,19 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">transient</span>;
 
 <span class="doccomment">/// Possible actions that can be requested to the event loop by an</span>
-<span class="doccomment">/// event source once its events have been processed</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="doccomment">/// event source once its events have been processed.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// `PostAction` values can be combined with the `|` (bit-or) operator (or with</span>
+<span class="doccomment">/// `|=`) with the result that:</span>
+<span class="doccomment">/// - if both values are identical, the result is that value</span>
+<span class="doccomment">/// - if they are different, the result is [`Reregister`]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Bit-or-ing these results is useful for composed sources to combine the</span>
+<span class="doccomment">/// results of their child sources, but note that it only applies to the child</span>
+<span class="doccomment">/// sources. For example, if every child source returns `Continue`, the result</span>
+<span class="doccomment">/// will be `Continue`, but the parent source might still need to return</span>
+<span class="doccomment">/// `Reregister` or something else depending on any additional logic it uses.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PostAction</span> {
     <span class="doccomment">/// Continue listening for events on this source as before</span>
     <span class="ident">Continue</span>,
@@ -621,6 +762,28 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Has the same effect as [`LoopHandle::kill`](crate::LoopHandle#method.kill)</span>
     <span class="ident">Remove</span>,
+}
+
+<span class="doccomment">/// Combines `PostAction` values returned from nested event sources.</span>
+<span class="kw">impl</span> <span class="ident">BitOr</span> <span class="kw">for</span> <span class="ident">PostAction</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
+
+    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident">x</span> <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="ident">rhs</span>) {
+            <span class="self">self</span>
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="self">Self</span>::Reregister</span>
+        }
+    }
+}
+
+<span class="doccomment">/// Combines `PostAction` values returned from nested event sources.</span>
+<span class="kw">impl</span> <span class="ident">BitOrAssign</span> <span class="kw">for</span> <span class="ident">PostAction</span> {
+    <span class="kw">fn</span> <span class="ident">bitor_assign</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) {
+        <span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">!</span><span class="op">=</span> <span class="ident">rhs</span> {
+            <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::Reregister</span>;
+        }
+    }
 }
 
 <span class="doccomment">/// Trait representing an event source</span>
@@ -1168,7 +1331,102 @@
 
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">fired</span>);
     }
+
+    <span class="comment">// Test PostAction combinations.</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">post_action_combine</span>() {
+        <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::PostAction</span>::<span class="kw-2">*</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">Continue</span> <span class="op">|</span> <span class="ident">Continue</span>, <span class="ident">Continue</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Continue</span> <span class="op">|</span> <span class="ident">Reregister</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Continue</span> <span class="op">|</span> <span class="ident">Disable</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Continue</span> <span class="op">|</span> <span class="ident">Remove</span>, <span class="ident">Reregister</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">Reregister</span> <span class="op">|</span> <span class="ident">Continue</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Reregister</span> <span class="op">|</span> <span class="ident">Reregister</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Reregister</span> <span class="op">|</span> <span class="ident">Disable</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Reregister</span> <span class="op">|</span> <span class="ident">Remove</span>, <span class="ident">Reregister</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">Disable</span> <span class="op">|</span> <span class="ident">Continue</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Disable</span> <span class="op">|</span> <span class="ident">Reregister</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Disable</span> <span class="op">|</span> <span class="ident">Disable</span>, <span class="ident">Disable</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Disable</span> <span class="op">|</span> <span class="ident">Remove</span>, <span class="ident">Reregister</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">Remove</span> <span class="op">|</span> <span class="ident">Continue</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Remove</span> <span class="op">|</span> <span class="ident">Reregister</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Remove</span> <span class="op">|</span> <span class="ident">Disable</span>, <span class="ident">Reregister</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Remove</span> <span class="op">|</span> <span class="ident">Remove</span>, <span class="ident">Remove</span>);
+    }
+
+    <span class="comment">// Test PostAction self-assignment.</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">post_action_combine_assign</span>() {
+        <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::PostAction</span>::<span class="kw-2">*</span>;
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Continue</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Disable</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Continue</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Reregister</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Disable</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Reregister</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action</span> <span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="ident">action</span> <span class="op">|</span><span class="op">=</span> <span class="ident">Remove</span>;
+        <span class="macro">assert_eq!</span>(<span class="ident">action</span>, <span class="ident">Remove</span>);
+    }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.2 (c1d075a45 2022-03-03)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.5 (6ee5a408a 2022-03-18)" ></div>
 </body></html>
