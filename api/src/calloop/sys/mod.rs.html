@@ -335,6 +335,7 @@
 <span id="330">330</span>
 <span id="331">331</span>
 <span id="332">332</span>
+<span id="333">333</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">os::unix::io::RawFd</span>};
 <span class="kw">use</span> <span class="ident">vec_map::VecMap</span>;
 
@@ -516,6 +517,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Poll</span> {
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">coverage</span>, <span class="ident">no_coverage</span>)]</span>
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Poll { ... }&quot;</span>)
     }
