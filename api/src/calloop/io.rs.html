@@ -447,6 +447,107 @@
 <span id="442">442</span>
 <span id="443">443</span>
 <span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Adapters for async IO objects</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module mainly hosts the [`Async`] adapter for making IO objects async with readiness</span>
@@ -487,6 +588,7 @@
     <span class="ident">old_flags</span>: <span class="ident">OFlag</span>,
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">tarpaulin_include</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="ident">F</span>: <span class="ident">AsRawFd</span> <span class="op">+</span> <span class="ident">std::fmt::Debug</span><span class="op">&gt;</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Async</span><span class="op">&lt;</span><span class="lifetime">&#39;l</span>, <span class="ident">F</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Async&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;fd&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fd</span>).<span class="ident">finish</span>()
@@ -888,6 +990,106 @@
 
         <span class="kw">while</span> <span class="op">!</span><span class="ident">received</span>.<span class="ident">get</span>() {
             <span class="ident">event_loop</span>.<span class="ident">dispatch</span>(<span class="prelude-val">None</span>, <span class="kw-2">&amp;mut</span> ()).<span class="ident">unwrap</span>();
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">readable</span>() {
+        <span class="kw">use</span> <span class="ident">std::io::Write</span>;
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_loop</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::EventLoop::try_new</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">event_loop</span>.<span class="ident">handle</span>();
+        <span class="kw">let</span> (<span class="ident">exec</span>, <span class="ident">sched</span>) <span class="op">=</span> <span class="ident">executor</span>().<span class="ident">unwrap</span>();
+        <span class="ident">handle</span>
+            .<span class="ident">insert_source</span>(<span class="ident">exec</span>, <span class="kw">move</span> <span class="op">|</span>(), <span class="kw-2">&amp;mut</span> (), <span class="ident">got</span><span class="op">|</span> {
+                <span class="kw-2">*</span><span class="ident">got</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            })
+            .<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">std::os::unix::net::UnixStream::pair</span>().<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rx</span> <span class="op">=</span> <span class="ident">handle</span>.<span class="ident">adapt_io</span>(<span class="ident">rx</span>).<span class="ident">unwrap</span>();
+        <span class="ident">sched</span>
+            .<span class="ident">schedule</span>(<span class="kw">async</span> <span class="kw">move</span> {
+                <span class="ident">rx</span>.<span class="ident">readable</span>().<span class="kw">await</span>;
+            })
+            .<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
+
+        <span class="ident">event_loop</span>
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">std::time::Duration::from_millis</span>(<span class="number">100</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">unwrap</span>();
+        <span class="comment">// The socket is not yet readable, so the readable() future has not completed</span>
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dispatched</span>);
+
+        <span class="ident">tx</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span>[<span class="number">42</span>]).<span class="ident">unwrap</span>();
+        <span class="ident">tx</span>.<span class="ident">flush</span>().<span class="ident">unwrap</span>();
+
+        <span class="comment">// Now we should become readable</span>
+        <span class="kw">while</span> <span class="op">!</span><span class="ident">dispatched</span> {
+            <span class="ident">event_loop</span>.<span class="ident">dispatch</span>(<span class="prelude-val">None</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>).<span class="ident">unwrap</span>();
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">writable</span>() {
+        <span class="kw">use</span> <span class="ident">std::io</span>::{<span class="ident">BufReader</span>, <span class="ident">BufWriter</span>, <span class="ident">Read</span>, <span class="ident">Write</span>};
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_loop</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::EventLoop::try_new</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">event_loop</span>.<span class="ident">handle</span>();
+        <span class="kw">let</span> (<span class="ident">exec</span>, <span class="ident">sched</span>) <span class="op">=</span> <span class="ident">executor</span>().<span class="ident">unwrap</span>();
+        <span class="ident">handle</span>
+            .<span class="ident">insert_source</span>(<span class="ident">exec</span>, <span class="kw">move</span> <span class="op">|</span>(), <span class="kw-2">&amp;mut</span> (), <span class="ident">got</span><span class="op">|</span> {
+                <span class="kw-2">*</span><span class="ident">got</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            })
+            .<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">tx</span>, <span class="kw-2">mut</span> <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">std::os::unix::net::UnixStream::pair</span>().<span class="ident">unwrap</span>();
+        <span class="ident">tx</span>.<span class="ident">set_nonblocking</span>(<span class="bool-val">true</span>).<span class="ident">unwrap</span>();
+        <span class="ident">rx</span>.<span class="ident">set_nonblocking</span>(<span class="bool-val">true</span>).<span class="ident">unwrap</span>();
+
+        <span class="comment">// First, fill the socket buffers</span>
+        {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">BufWriter::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">tx</span>);
+            <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">42u8</span>; <span class="number">1024</span>];
+            <span class="kw">loop</span> {
+                <span class="kw">if</span> <span class="ident">writer</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="ident">is_err</span>() {
+                    <span class="kw">break</span>;
+                }
+            }
+        }
+
+        <span class="comment">// Now, wait for it to be readable</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tx</span> <span class="op">=</span> <span class="ident">handle</span>.<span class="ident">adapt_io</span>(<span class="ident">tx</span>).<span class="ident">unwrap</span>();
+        <span class="ident">sched</span>
+            .<span class="ident">schedule</span>(<span class="kw">async</span> <span class="kw">move</span> {
+                <span class="ident">tx</span>.<span class="ident">writable</span>().<span class="kw">await</span>;
+            })
+            .<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
+
+        <span class="ident">event_loop</span>
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">std::time::Duration::from_millis</span>(<span class="number">100</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">unwrap</span>();
+        <span class="comment">// The socket is not yet writable, so the readable() future has not completed</span>
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dispatched</span>);
+
+        <span class="comment">// now read everything</span>
+        {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BufReader::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rx</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="number">1024</span>];
+            <span class="kw">loop</span> {
+                <span class="kw">if</span> <span class="ident">reader</span>.<span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buffer</span>).<span class="ident">is_err</span>() {
+                    <span class="kw">break</span>;
+                }
+            }
+        }
+
+        <span class="comment">// Now we should become writable</span>
+        <span class="kw">while</span> <span class="op">!</span><span class="ident">dispatched</span> {
+            <span class="ident">event_loop</span>.<span class="ident">dispatch</span>(<span class="prelude-val">None</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>).<span class="ident">unwrap</span>();
         }
     }
 }
