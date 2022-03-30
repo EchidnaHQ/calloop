@@ -537,7 +537,7 @@
 
         <span class="comment">// nothing is sent, nothing is received</span>
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">got</span>, (<span class="bool-val">false</span>, <span class="bool-val">false</span>));
@@ -545,7 +545,7 @@
         <span class="comment">// a message is send</span>
         <span class="ident">tx</span>.<span class="ident">send</span>(()).<span class="ident">unwrap</span>();
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">got</span>, (<span class="bool-val">true</span>, <span class="bool-val">false</span>));
@@ -553,7 +553,7 @@
         <span class="comment">// the sender is dropped</span>
         <span class="ident">::std::mem::drop</span>(<span class="ident">tx</span>);
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">got</span>, (<span class="bool-val">true</span>, <span class="bool-val">true</span>));
@@ -585,7 +585,7 @@
 
         <span class="comment">// nothing is sent, nothing is received</span>
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">received</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">received</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">received</span>.<span class="number">0</span>, <span class="number">0</span>);
@@ -598,7 +598,7 @@
 
         <span class="comment">// empty it</span>
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">received</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">received</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">received</span>.<span class="number">0</span>, <span class="number">2</span>);
@@ -610,7 +610,7 @@
 
         <span class="comment">// final read of the channel</span>
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">received</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">received</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">received</span>.<span class="number">0</span>, <span class="number">3</span>);
@@ -618,5 +618,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.5 (6ee5a408a 2022-03-18)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.6 (7bccde197 2022-03-22)" ></div>
 </body></html>

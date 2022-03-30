@@ -411,7 +411,7 @@
         <span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="kw">async</span> { <span class="number">42</span> };
 
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="comment">// the future is not yet inserted, and thus has not yet run</span>
@@ -420,7 +420,7 @@
         <span class="ident">sched</span>.<span class="ident">schedule</span>(<span class="ident">fut</span>).<span class="ident">unwrap</span>();
 
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">::std::time::Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">got</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="comment">// the future has run</span>
@@ -428,5 +428,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.5 (6ee5a408a 2022-03-18)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.6 (7bccde197 2022-03-22)" ></div>
 </body></html>

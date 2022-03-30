@@ -896,60 +896,6 @@
 <span id="891">891</span>
 <span id="892">892</span>
 <span id="893">893</span>
-<span id="894">894</span>
-<span id="895">895</span>
-<span id="896">896</span>
-<span id="897">897</span>
-<span id="898">898</span>
-<span id="899">899</span>
-<span id="900">900</span>
-<span id="901">901</span>
-<span id="902">902</span>
-<span id="903">903</span>
-<span id="904">904</span>
-<span id="905">905</span>
-<span id="906">906</span>
-<span id="907">907</span>
-<span id="908">908</span>
-<span id="909">909</span>
-<span id="910">910</span>
-<span id="911">911</span>
-<span id="912">912</span>
-<span id="913">913</span>
-<span id="914">914</span>
-<span id="915">915</span>
-<span id="916">916</span>
-<span id="917">917</span>
-<span id="918">918</span>
-<span id="919">919</span>
-<span id="920">920</span>
-<span id="921">921</span>
-<span id="922">922</span>
-<span id="923">923</span>
-<span id="924">924</span>
-<span id="925">925</span>
-<span id="926">926</span>
-<span id="927">927</span>
-<span id="928">928</span>
-<span id="929">929</span>
-<span id="930">930</span>
-<span id="931">931</span>
-<span id="932">932</span>
-<span id="933">933</span>
-<span id="934">934</span>
-<span id="935">935</span>
-<span id="936">936</span>
-<span id="937">937</span>
-<span id="938">938</span>
-<span id="939">939</span>
-<span id="940">940</span>
-<span id="941">941</span>
-<span id="942">942</span>
-<span id="943">943</span>
-<span id="944">944</span>
-<span id="945">945</span>
-<span id="946">946</span>
-<span id="947">947</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::cell</span>::{<span class="ident">Cell</span>, <span class="ident">RefCell</span>};
 <span class="kw">use</span> <span class="ident">std::fmt::Debug</span>;
 <span class="kw">use</span> <span class="ident">std::io</span>;
@@ -957,7 +903,7 @@
 <span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
 <span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
-<span class="kw">use</span> <span class="ident">std::time::Duration</span>;
+<span class="kw">use</span> <span class="ident">std::time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>};
 
 <span class="kw">use</span> <span class="ident">slotmap::SlotMap</span>;
 
@@ -1172,7 +1118,22 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Fails if the initialization of the polling system failed.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>() -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">poll</span> <span class="op">=</span> <span class="ident">Poll::new</span>()<span class="question-mark">?</span>;
+        <span class="ident"><span class="self">Self</span>::inner_new</span>(<span class="bool-val">false</span>)
+    }
+
+    <span class="doccomment">/// Create a new event loop in high precision mode</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// On some platforms it requires to setup more resources to enable high-precision</span>
+    <span class="doccomment">/// (sub millisecond) capabilities, so you should use this constructor if you need</span>
+    <span class="doccomment">/// this kind of precision.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Fails if the initialization of the polling system failed.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new_high_precision</span>() -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::inner_new</span>(<span class="bool-val">true</span>)
+    }
+
+    <span class="kw">fn</span> <span class="ident">inner_new</span>(<span class="ident">high_precision</span>: <span class="ident">bool</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">poll</span> <span class="op">=</span> <span class="ident">Poll::new</span>(<span class="ident">high_precision</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">LoopHandle</span> {
             <span class="ident">inner</span>: <span class="ident">Rc::new</span>(<span class="ident">LoopInner</span> {
                 <span class="ident">poll</span>: <span class="ident">RefCell::new</span>(<span class="ident">poll</span>),
@@ -1200,10 +1161,10 @@
         <span class="kw-2">mut</span> <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
         <span class="ident">data</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Data</span>,
     ) -&gt; <span class="ident"><span class="kw">crate</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
         <span class="kw">let</span> <span class="ident">events</span> <span class="op">=</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">poll</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">inner</span>.<span class="ident">poll</span>.<span class="ident">borrow_mut</span>();
             <span class="kw">loop</span> {
-                <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">std::time::Instant::now</span>();
                 <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">poll</span>.<span class="ident">poll</span>(<span class="ident">timeout</span>);
 
                 <span class="kw">match</span> <span class="ident">result</span> {
@@ -1419,8 +1380,8 @@
     <span class="kw">use</span> <span class="ident">std::time::Duration</span>;
 
     <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">generic::Generic</span>, <span class="ident">ping</span>::<span class="kw-2">*</span>, <span class="ident">timer::Timer</span>, <span class="ident">Dispatcher</span>, <span class="ident">Interest</span>, <span class="ident">Mode</span>, <span class="ident">Poll</span>, <span class="ident">PostAction</span>,
-        <span class="ident">Readiness</span>, <span class="ident">RegistrationToken</span>, <span class="ident">Token</span>, <span class="ident">TokenFactory</span>,
+        <span class="ident">generic::Generic</span>, <span class="ident">ping</span>::<span class="kw-2">*</span>, <span class="ident">Dispatcher</span>, <span class="ident">Interest</span>, <span class="ident">Mode</span>, <span class="ident">Poll</span>, <span class="ident">PostAction</span>, <span class="ident">Readiness</span>,
+        <span class="ident">RegistrationToken</span>, <span class="ident">Token</span>, <span class="ident">TokenFactory</span>,
     };
 
     <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::EventLoop</span>;
@@ -1436,7 +1397,7 @@
         });
 
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>)), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="prelude-val">Some</span>(<span class="ident">Duration::ZERO</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert!</span>(<span class="ident">dispatched</span>);
@@ -1456,7 +1417,7 @@
         <span class="ident">idle</span>.<span class="ident">cancel</span>();
 
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dispatched</span>);
@@ -1528,7 +1489,7 @@
         <span class="ident">ping</span>.<span class="ident">ping</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">dispatched</span>);
 
@@ -1537,7 +1498,7 @@
         <span class="ident">event_loop</span>.<span class="ident">handle</span>().<span class="ident">disable</span>(<span class="kw-2">&amp;</span><span class="ident">ping_token</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dispatched</span>);
 
@@ -1548,7 +1509,7 @@
         <span class="ident">event_loop</span>.<span class="ident">handle</span>().<span class="ident">enable</span>(<span class="kw-2">&amp;</span><span class="ident">ping_token</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">dispatched</span>);
     }
@@ -1630,14 +1591,14 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispatched</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="ident">ping1</span>.<span class="ident">ping</span>();
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">dispatched</span>, <span class="number">1</span>);
 
         <span class="ident">dispatched</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="ident">ping2</span>.<span class="ident">ping</span>();
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">dispatched</span>, <span class="number">2</span>);
 
@@ -1645,7 +1606,7 @@
         <span class="ident">ping1</span>.<span class="ident">ping</span>();
         <span class="ident">ping2</span>.<span class="ident">ping</span>();
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">dispatched</span>, <span class="number">3</span>);
     }
@@ -1696,7 +1657,7 @@
         <span class="comment">// first dispatch, nothing is readable</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dispatched</span>);
 
@@ -1704,14 +1665,14 @@
         <span class="ident">write</span>(<span class="ident">sock2</span>, <span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]).<span class="ident">unwrap</span>();
         <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">dispatched</span>);
 
         <span class="comment">// All has been read, no longer readable</span>
         <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dispatched</span>);
 
@@ -1722,7 +1683,7 @@
         <span class="comment">// the socket is writable</span>
         <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">dispatched</span>);
 
@@ -1733,7 +1694,7 @@
         <span class="comment">// the socket is not readable</span>
         <span class="ident">dispatched</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
+            .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dispatched</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dispatched</span>);
     }
@@ -1757,78 +1718,9 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">opt_src</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ping_token</span>);
 
-        <span class="ident">event_loop</span>
-            .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">opt_src</span>)
-            .<span class="ident">unwrap</span>();
+        <span class="ident">event_loop</span>.<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">opt_src</span>).<span class="ident">unwrap</span>();
 
         <span class="macro">assert!</span>(<span class="ident">opt_src</span>.<span class="ident">is_none</span>());
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">non_static_source</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flag</span> <span class="op">=</span> <span class="bool-val">false</span>;
-
-        {
-            <span class="kw">let</span> <span class="ident">timer</span> <span class="op">=</span> <span class="ident">Timer::new</span>().<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">timer</span>.<span class="ident">handle</span>();
-            <span class="ident">handle</span>.<span class="ident">add_timeout</span>(<span class="ident">std::time::Duration::from_millis</span>(<span class="number">5</span>), <span class="kw-2">&amp;mut</span> <span class="ident">flag</span>);
-
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fired</span> <span class="op">=</span> <span class="bool-val">false</span>;
-
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_loop</span> <span class="op">=</span> <span class="ident">EventLoop</span>::<span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="ident">::try_new</span>().<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">_timer_token</span> <span class="op">=</span> <span class="ident">event_loop</span>
-                .<span class="ident">handle</span>()
-                .<span class="ident">insert_source</span>(<span class="ident">timer</span>, <span class="op">|</span><span class="ident">flag</span>, <span class="kw">_</span>, <span class="ident">fired</span><span class="op">|</span> {
-                    <span class="kw-2">*</span><span class="ident">flag</span> <span class="op">=</span> <span class="bool-val">true</span>;
-                    <span class="kw-2">*</span><span class="ident">fired</span> <span class="op">=</span> <span class="bool-val">true</span>;
-                })
-                .<span class="ident">unwrap</span>();
-
-            <span class="ident">event_loop</span>
-                .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">500</span>), <span class="kw-2">&amp;mut</span> <span class="ident">fired</span>)
-                .<span class="ident">unwrap</span>();
-
-            <span class="macro">assert!</span>(<span class="ident">fired</span>);
-        }
-
-        <span class="macro">assert!</span>(<span class="ident">flag</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">non_static_dispatcher</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flag</span> <span class="op">=</span> <span class="bool-val">false</span>;
-
-        {
-            <span class="kw">let</span> <span class="ident">timer</span> <span class="op">=</span> <span class="ident">Timer</span>::<span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">bool</span><span class="op">&gt;</span><span class="ident">::new</span>().<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">timer</span>
-                .<span class="ident">handle</span>()
-                .<span class="ident">add_timeout</span>(<span class="ident">std::time::Duration::from_millis</span>(<span class="number">5</span>), <span class="kw-2">&amp;mut</span> <span class="ident">flag</span>);
-
-            <span class="kw">let</span> <span class="ident">dispatcher</span> <span class="op">=</span> <span class="ident">Dispatcher::new</span>(<span class="ident">timer</span>, <span class="op">|</span><span class="ident">flag</span>, <span class="kw">_</span>, <span class="ident">fired</span><span class="op">|</span> {
-                <span class="kw-2">*</span><span class="ident">flag</span> <span class="op">=</span> <span class="bool-val">true</span>;
-                <span class="kw-2">*</span><span class="ident">fired</span> <span class="op">=</span> <span class="bool-val">true</span>;
-            });
-
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fired</span> <span class="op">=</span> <span class="bool-val">false</span>;
-
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event_loop</span> <span class="op">=</span> <span class="ident">EventLoop</span>::<span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="ident">::try_new</span>().<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">disp_token</span> <span class="op">=</span> <span class="ident">event_loop</span>
-                .<span class="ident">handle</span>()
-                .<span class="ident">register_dispatcher</span>(<span class="ident">dispatcher</span>.<span class="ident">clone</span>())
-                .<span class="ident">unwrap</span>();
-
-            <span class="ident">event_loop</span>
-                .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">500</span>), <span class="kw-2">&amp;mut</span> <span class="ident">fired</span>)
-                .<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">fired</span>);
-
-            <span class="ident">event_loop</span>.<span class="ident">handle</span>().<span class="ident">remove</span>(<span class="ident">disp_token</span>);
-
-            <span class="kw">let</span> <span class="ident">timer</span> <span class="op">=</span> <span class="ident">dispatcher</span>.<span class="ident">into_source_inner</span>();
-            <span class="ident">timer</span>.<span class="ident">handle</span>().<span class="ident">cancel_all_timeouts</span>();
-        }
-
-        <span class="macro">assert!</span>(<span class="ident">flag</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1853,7 +1745,7 @@
             <span class="ident">ping</span>.<span class="ident">ping</span>();
 
             <span class="ident">event_loop</span>
-                .<span class="ident">dispatch</span>(<span class="ident">Duration::from_millis</span>(<span class="number">0</span>), <span class="kw-2">&amp;mut</span> <span class="ident">ref_sender</span>)
+                .<span class="ident">dispatch</span>(<span class="ident">Duration::ZERO</span>, <span class="kw-2">&amp;mut</span> <span class="ident">ref_sender</span>)
                 .<span class="ident">unwrap</span>();
         }
 
@@ -1898,5 +1790,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.5 (6ee5a408a 2022-03-18)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="calloop" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-beta.6 (7bccde197 2022-03-22)" ></div>
 </body></html>
