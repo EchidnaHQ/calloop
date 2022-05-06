@@ -169,7 +169,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="ping"><a class="header" href="#ping">Ping</a></h1>
+                        <h1 id="pinging-the-event-loop"><a class="header" href="#pinging-the-event-loop">&quot;Pinging&quot; the event loop</a></h1>
+<p>The <a href="api/calloop/ping/struct.Ping.html"><code>Ping</code></a> event source has one very simple job — wake up the event loop. Use this when you know there are events for your event source to process, but those events aren't going to wake the event loop up themselves.</p>
+<p>For example, calloop's own <a href="api/calloop/channel/struct.Channel.html"><code>message channel</code></a> uses Rust's native MPSC channel internally. Because there's no way for the internal message queue to wake up the event loop, it's coupled with a <code>Ping</code> source that wakes the loop up when there are new messages.</p>
+<h2 id="how-to-use-the-ping-source"><a class="header" href="#how-to-use-the-ping-source">How to use the Ping source</a></h2>
+<p>The <code>Ping</code> has two ends — the event source part (<a href="api/calloop/ping/struct.PingSource.html"><code>PingSource</code></a>), that goes in the event loop, and the sending end (<code>Ping</code>) you use to &quot;send&quot; the ping. To wake the event loop up, call <a href="api/calloop/ping/struct.Ping.html#method.ping"><code>ping()</code></a> on the sending end.</p>
+<blockquote>
+<p>Do not forget to process the events of the <code>PingSource</code> if you are using it as part of a larger event source! Even though the events carry no information (they are just <code>()</code> values), the <code>process_events()</code> method must be called in order to &quot;reset&quot; the <code>PingSource</code>. Otherwise the event loop will be continually woken up until you do, effectively becoming a busy-loop.</p>
+</blockquote>
 
                     </main>
 

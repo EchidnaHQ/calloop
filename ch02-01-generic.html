@@ -170,6 +170,26 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="monitoring-a-file-descriptor"><a class="header" href="#monitoring-a-file-descriptor">Monitoring a file descriptor</a></h1>
+<p>The <code>Generic</code> event source wraps a file descriptor (&quot;fd&quot;) and fires its callback any time there are events on it ie. becoming readable or writable, or encountering an error. It's pretty simple, but it's what every other event source is based around. And since the platforms that calloop runs on expose many different kinds of events via fds, it's usually the key to using those events in calloop.</p>
+<p>For example on Linux, fd-based interfaces are available for GPIO, I2C, USB, UART, network interfaces, timers and many other systems. Integrating these into calloop starts with obtaining the appropriate fd, creating a <code>Generic</code> event source from it, and building up a more useful, abstracted event source around that. A detailed example of this is <a href="ch04-00-a-full-example-zeromq.html">given for ZeroMQ</a>.</p>
+<p>You do not have to use a low-level fd either: any type that implements <a href="https://doc.rust-lang.org/beta/std/os/unix/io/trait.AsRawFd.html"><code>AsRawFd</code></a> can be provided. This means that you can use a wrapper type that handles allocation and disposal itself, and implement <code>AsRawFd</code> on it so that <code>Generic</code> can manage it in the event loop.</p>
+<h2 id="creating-a-generic-source"><a class="header" href="#creating-a-generic-source">Creating a Generic source</a></h2>
+<p>Creating a <code>Generic</code> event source requires three things:</p>
+<ul>
+<li>The fd itself, of course, possibly in a wrapper type that implements <code>AsRawFd</code></li>
+<li>The <a href="api/calloop/struct.Interest.html">&quot;interest&quot;</a> you have in this descriptor — this means, whether you want to generate events when the fd becomes readable, writeable, or both</li>
+<li>The <a href="api/calloop/enum.Mode.html">&quot;mode&quot;</a> of event generation - level triggered or edge triggered</li>
+</ul>
+<p>The easiest constructor to use is the <a href="api/calloop/generic/struct.Generic.html#method.new"><code>new()</code></a> method, but if you need control over the <a href="ch02-06-errors.html">associated error type</a> there is also <a href="api/calloop/generic/struct.Generic.html#method.new_with_error"><code>new_with_error()</code></a>.</p>
+<h2 id="ownership-and-asrawfd-wrappers"><a class="header" href="#ownership-and-asrawfd-wrappers">Ownership and AsRawFd wrappers</a></h2>
+<p>It's important to remember that file descriptors by themselves have no concept of ownership attached to them in Rust — they are simply bare integers. Dropping them does close the resource they refer to, and copying them does not carry information about how many there are.</p>
+<p>Typically (eg. in the standard library) they would be an underlying implementation detail of another type that <em>did</em> encode ownership somehow. This how you can manage them in any of your own integration code - use drop handlers, reference counting (if necessary) and general RAII principles in a wrapper type, and then implement <code>AsRawFd</code> to allow <code>Generic</code> to use it. The <code>Generic</code> source will take ownership of it, so it will be dropped when the <code>Generic</code> is.</p>
+<p>This means you need to do at least two things:</p>
+<ul>
+<li>follow the rules of the API you obtain the fd from</li>
+<li>wrap them in a type that manages ownership appropriately</li>
+</ul>
+<p>For example, on Unix-like systems the <a href="https://doc.rust-lang.org/beta/std/net/struct.UdpSocket.html"><code>UdpSocket</code></a> contains a fd, and upon being dropped, <code>libc::close(fd)</code> is called on it. If you create a <code>Generic&lt;UdpSocket&gt;</code> then, it will be closed upon dropping it.</p>
 
                     </main>
 
