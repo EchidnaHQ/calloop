@@ -199,7 +199,7 @@
 <p>This single-threaded nature makes event loops much more similar to code that uses <code>async</code>/<code>await</code> than to multithreaded code. There are benefits and tradeoffs to either approach.</p>
 <p>Calloop will take care of a lot of integration and error handling boilerplate for you. It also makes it clearer what parts of your code are the non-blocking actions to perform as a result of events. If you like to think of your program in terms of taking action in reaction to events, this can be a great advantage!</p>
 <p>However, this comes at the expense of needing to make your program's state much more explicit. For example, take this async code:</p>
-<pre><code class="language-rust noplayground">do_thing_one().await;
+<pre><code class="language-rust noplayground no_run">do_thing_one().await;
 do_thing_two().await;
 do_thing_three().await;
 </code></pre>

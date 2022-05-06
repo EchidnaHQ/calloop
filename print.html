@@ -212,7 +212,7 @@
 <p>This single-threaded nature makes event loops much more similar to code that uses <code>async</code>/<code>await</code> than to multithreaded code. There are benefits and tradeoffs to either approach.</p>
 <p>Calloop will take care of a lot of integration and error handling boilerplate for you. It also makes it clearer what parts of your code are the non-blocking actions to perform as a result of events. If you like to think of your program in terms of taking action in reaction to events, this can be a great advantage!</p>
 <p>However, this comes at the expense of needing to make your program's state much more explicit. For example, take this async code:</p>
-<pre><code class="language-rust noplayground">do_thing_one().await;
+<pre><code class="language-rust noplayground no_run">do_thing_one().await;
 do_thing_two().await;
 do_thing_three().await;
 </code></pre>
@@ -237,7 +237,7 @@ do_thing_three().await;
 </ul>
 <p>The easiest constructor to use is the <a href="api/calloop/generic/struct.Generic.html#method.new"><code>new()</code></a> method, but if you need control over the <a href="ch02-06-errors.html">associated error type</a> there is also <a href="api/calloop/generic/struct.Generic.html#method.new_with_error"><code>new_with_error()</code></a>.</p>
 <h2 id="ownership-and-asrawfd-wrappers"><a class="header" href="#ownership-and-asrawfd-wrappers">Ownership and AsRawFd wrappers</a></h2>
-<p>It's important to remember that file descriptors by themselves have no concept of ownership attached to them in Rust — they are simply bare integers. Dropping them does close the resource they refer to, and copying them does not carry information about how many there are.</p>
+<p>It's important to remember that file descriptors by themselves have no concept of ownership attached to them in Rust — they are simply bare integers. Dropping them does not close the resource they refer to, and copying them does not carry information about how many there are.</p>
 <p>Typically (eg. in the standard library) they would be an underlying implementation detail of another type that <em>did</em> encode ownership somehow. This how you can manage them in any of your own integration code - use drop handlers, reference counting (if necessary) and general RAII principles in a wrapper type, and then implement <code>AsRawFd</code> to allow <code>Generic</code> to use it. The <code>Generic</code> source will take ownership of it, so it will be dropped when the <code>Generic</code> is.</p>
 <p>This means you need to do at least two things:</p>
 <ul>
@@ -246,193 +246,91 @@ do_thing_three().await;
 </ul>
 <p>For example, on Unix-like systems the <a href="https://doc.rust-lang.org/beta/std/net/struct.UdpSocket.html"><code>UdpSocket</code></a> contains a fd, and upon being dropped, <code>libc::close(fd)</code> is called on it. If you create a <code>Generic&lt;UdpSocket&gt;</code> then, it will be closed upon dropping it.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="working-with-timers"><a class="header" href="#working-with-timers">Working with timers</a></h1>
-<p>To illustrate how timers work in calloop, let's create a program that waits for five seconds, prints a message, and exits. If you've already read the <code>README</code> file or <a href="api">API docs</a>, this will look familiar.</p>
-<h2 id="the-timer-event-source"><a class="header" href="#the-timer-event-source">The timer event source</a></h2>
-<p>The first thing we need is an event source — that is, a type that implements the trait <code>calloop::EventSource</code>. If we look under <code>calloop::timer</code> we'll see the appropriately named <code>Timer</code>.</p>
-<p><code>Timer</code> follows a pattern you'll see used for many event sources in Calloop. There is an event source (<code>Timer</code>) that is inserted into the loop. But there is also some other type (in this case, <code>TimerHandle</code>) that allows you to control or configure that source even after the loop has taken ownership of the source itself. For example:</p>
-<ul>
-<li>
-<p>there is an MPSC (multiple producer, single consumer) channel that acts as an event source; the &quot;control&quot; end is simply the sending end of the channel</p>
-</li>
-<li>
-<p>there is an <code>async</code> executor that acts as an event source; it is created along with a scheduler which lets you add <code>Future</code>s</p>
-</li>
-<li>
-<p>the <code>Timer</code> can give you a <code>TimerHandle</code>, which lets you set or cancel timeouts</p>
-</li>
-</ul>
-<p>So with <code>use calloop::timer::Timer</code> at the top of our <code>.rs</code> file, we just need to do:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::{timer::Timer, EventLoop, LoopSignal};
+<p>Timer event sources are used to manipulate time-related actions. Those are provided under the <a href="api/calloop/timer/index.html"><code>calloop::timer</code></a> module, with the <code>Timer</code> type at its core.</p>
+<p>A <code>Timer</code> source has a simple behavior: it is programmer to wait for some duration, or until a certain point in time. Once that deadline is reached, the source generates an event.</p>
+<p>So with <code>use calloop::timer::Timer</code> at the top of our <code>.rs</code> file, we can create a timer that will wait for 5 seconds:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use std::time::Duration;
+</span><span class="boring">
+</span><span class="boring">use calloop::{timer::{Timer, TimeoutAction}, EventLoop};
 </span><span class="boring">
 </span><span class="boring">fn main() {
-</span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">    let mut event_loop = EventLoop::try_new()
+</span><span class="boring">        .expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span>    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
-
-    let timer_handle = source.handle();
-    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
+</span>    let timer = Timer::from_duration(Duration::from_secs(5));
 <span class="boring">
-</span><span class="boring">    let handle = event_loop.handle();
-</span><span class="boring">
-</span><span class="boring">    handle
-</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
-</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">            shared_data.stop();
+</span><span class="boring">    event_loop.handle()
+</span><span class="boring">        .insert_source(timer, |deadline, _: &amp;mut (), _shared_data| {
+</span><span class="boring">            println!(&quot;Event fired for: {:?}&quot;, deadline);
+</span><span class="boring">            TimeoutAction::Drop
 </span><span class="boring">        })
 </span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
-</span><span class="boring">
-</span><span class="boring">    let mut shared_data = event_loop.get_signal();
 </span><span class="boring">
 </span><span class="boring">    event_loop
-</span><span class="boring">        .run(None, &amp;mut shared_data, |_shared_data| {})
+</span><span class="boring">        .dispatch(None, &amp;mut ())
 </span><span class="boring">        .expect(&quot;Error during event loop!&quot;);
 </span><span class="boring">}
-</span></code></pre></pre>
-<p>Many methods in Calloop return a <code>Result</code> because creating these sources is inherently risky — most event sources require some kind of underlying operating system resource, which can potentially be exhausted. You will have to decide how to handle such errors.</p>
-<p>An extremely important thing to note about our timer handle here is that we are not constrained to use it before we run our event loop. We may call methods on it from other event callbacks, we may clone it and even use it in other threads or futures to dynamically control the <code>Timer</code> that is now part of the event loop.</p>
-<h2 id="calloops-type-parameters"><a class="header" href="#calloops-type-parameters">Calloop's type parameters</a></h2>
-<p>The second argument to <code>add_timeout()</code> deserves extra attention. Calloop has a few different type parameters that you'll need to know about to use it properly. The two most important are:</p>
-<ul>
-<li>
-<p>The event loop itself, <code>EventLoop</code>, is parameterised by the type of the shared data that all callbacks receive. This will probably correspond to the &quot;high level&quot; state of your program.</p>
-</li>
-<li>
-<p>Event sources ie. implementations of <code>EventSource</code>, have an associated type <code>Event</code>. This differs from source to source, and always relates to the &quot;control side&quot; of the source.</p>
-</li>
-</ul>
-<p>In the case of a timer, <code>Timer::Event</code> is the type of data that you give to the handle: here it is <code>&amp;'static str</code>. But what about <code>EventLoop</code>'s type parameter? Well, since we want to exit the program after the timer fires, the high level &quot;state&quot; of our program is simply whether our loop is running or not. This is easily controlled by the <code>LoopSignal</code> value that <code>EventLoop::get_signal()</code> provides us, which has a <code>stop()</code> method. So let's make this our shared state:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::{timer::Timer, EventLoop, LoopSignal};
-</span><span class="boring">
-</span><span class="boring">fn main() {
-</span>    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
-<span class="boring">
-</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
-</span><span class="boring">
-</span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
-</span><span class="boring">
-</span><span class="boring">    let handle = event_loop.handle();
-</span><span class="boring">
-</span><span class="boring">    handle
-</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
-</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">            shared_data.stop();
-</span><span class="boring">        })
-</span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
-</span><span class="boring">
-</span><span class="boring">    let mut shared_data = event_loop.get_signal();
-</span><span class="boring">
-</span><span class="boring">    event_loop
-</span><span class="boring">        .run(None, &amp;mut shared_data, |_shared_data| {})
-</span><span class="boring">        .expect(&quot;Error during event loop!&quot;);
-</span><span class="boring">}
-</span></code></pre></pre>
-<p>This is just the type annotation — something that Rust could infer itself, but it's often helpful to make it explicit here to avoid confusing error messages if you get it wrong in callbacks or method calls. The actual data is provided when we run the loop:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::{timer::Timer, EventLoop, LoopSignal};
-</span><span class="boring">
-</span><span class="boring">fn main() {
-</span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
-</span><span class="boring">
-</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
-</span><span class="boring">
-</span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
-</span><span class="boring">
-</span><span class="boring">    let handle = event_loop.handle();
-</span><span class="boring">
-</span><span class="boring">    handle
-</span><span class="boring">        .insert_source(source, |event, _metadata, shared_data| {
-</span><span class="boring">            println!(&quot;Event fired: {}&quot;, event);
-</span><span class="boring">            shared_data.stop();
-</span><span class="boring">        })
-</span><span class="boring">        .expect(&quot;Failed to insert event source!&quot;);
-</span><span class="boring">
-</span>    let mut shared_data = event_loop.get_signal();
-
-    event_loop
-        .run(None, &amp;mut shared_data, |_shared_data| {})
-        .expect(&quot;Error during event loop!&quot;);
-<span class="boring">}
-</span></code></pre></pre>
-<p>The callback provided in the <code>run()</code> method is for when the loop is idle, which we're not using here.</p>
+</span></code></pre>
 <h2 id="adding-sources-to-the-loop"><a class="header" href="#adding-sources-to-the-loop">Adding sources to the loop</a></h2>
 <p>We have an event source, we have our shared data, and we know how to start our loop running. All that is left is to learn how to combine these things:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use calloop::{timer::Timer, EventLoop, LoopSignal};
+<pre><code class="language-rust noplayground"><span class="boring">use std::time::Duration;
+</span><span class="boring">
+</span><span class="boring">use calloop::{timer::{Timer, TimeoutAction}, EventLoop};
 </span><span class="boring">
 </span><span class="boring">fn main() {
-</span><span class="boring">    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-</span><span class="boring">        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">    let mut event_loop = EventLoop::try_new()
+</span><span class="boring">        .expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
-</span><span class="boring">    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
+</span><span class="boring">    let timer = Timer::from_duration(Duration::from_secs(5));
 </span><span class="boring">
-</span><span class="boring">    let timer_handle = source.handle();
-</span><span class="boring">    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
-</span><span class="boring">
-</span>    let handle = event_loop.handle();
-
-    handle
-        .insert_source(source, |event, _metadata, shared_data| {
-            println!(&quot;Event fired: {}&quot;, event);
-            shared_data.stop();
+</span>    event_loop.handle()
+        .insert_source(timer, |deadline, _: &amp;mut (), _shared_data| {
+            println!(&quot;Event fired for: {:?}&quot;, deadline);
+            TimeoutAction::Drop
         })
         .expect(&quot;Failed to insert event source!&quot;);
 <span class="boring">
-</span><span class="boring">    let mut shared_data = event_loop.get_signal();
-</span><span class="boring">
 </span><span class="boring">    event_loop
-</span><span class="boring">        .run(None, &amp;mut shared_data, |_shared_data| {})
+</span><span class="boring">        .dispatch(None, &amp;mut ())
 </span><span class="boring">        .expect(&quot;Error during event loop!&quot;);
 </span><span class="boring">}
-</span></code></pre></pre>
-<p>Breaking this down:</p>
+</span></code></pre>
+<p>Breaking this down, the callback we provide receives 3 arguments:</p>
 <ul>
-<li>
-<p>We obtain a handle from the event loop. Much like the timer handle above, this is a separate type from the event loop and allows us to insert events sources. Event sources can be added to the loop from eg. your main function, within event callbacks, and futures. Note that it is <em>not</em> safe to pass across threads!</p>
-</li>
-<li>
-<p>We insert the source using <code>LoopHandle::insert_source()</code>.</p>
-</li>
-<li>
-<p>When we insert the source we also provide a callback that will be called on every event generated by the event source. This callback will take the event specific data (our <code>&amp;'static str</code>), some source-specific data (the timer's handle) and the shared loop data (a <code>LoopSignal</code>).</p>
-</li>
+<li>The first one is an <a href="https://doc.rust-lang.org/stable/std/time/struct.Instant.html"><code>Instant</code></a> representing the time at which this timer was scheduled to expire. Due to how the event loop works, it might be that your callback is not invoked at the exact time where the timer expired (if an other callback was being processed at the time for example), so the original deadline is given if you need precise time tracking.</li>
+<li>The second argument is just <code>&amp;mut ()</code>, as the timers don't use the <code>EventSource</code> functionality.</li>
+<li>The third argumument is the shared data passed to your event loop.</li>
 </ul>
-<p>Our callback does the two things we want to do when five seconds have elapsed: print a message, and stop the loop.</p>
-<p>Once the loop stops, the <code>run()</code> call will exit and so will <code>main()</code>.</p>
+<p>In addition your callback is expected to return a <a href="api/calloop/timer/enum.TimeoutAction.html"><code>TimeoutAction</code></a>, that will instruct calloop what to do next. This enum has 3 values:</p>
+<ul>
+<li><code>Drop</code> will disable the timer and destroy it, freeing the callback.</li>
+<li><code>ToInstant</code> will rechedule the callback to fire again at given <code>Instant</code>, invoking the same callback again. This is useful if you need to create a timer that fires events at regular intervals, for example to encode key repetition in a graphical app. You would compute the next instant by adding the duration to the previous instant. It is not a problem if that duration is in the past, it'll simply cause the timer to fire again instantly. THis way, even if some other part of your app lags, you'll still have on average the correct amount of events per second.</li>
+<li><code>ToDuration</code> will reschedule the callback to fire again after a given <code>Duration</code>. This is useful if you need to schedule some background task to execute again after some time after it was last completed, when there is no point in catching up some previous lag.</li>
+</ul>
 <h2 id="the-whole-program"><a class="header" href="#the-whole-program">The whole program</a></h2>
 <p>Putting it all together, we have:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">use calloop::{timer::Timer, EventLoop, LoopSignal};
+<pre><code class="language-rust noplayground">use std::time::Duration;
+
+use calloop::{timer::{Timer, TimeoutAction}, EventLoop};
 
 fn main() {
-    let mut event_loop: EventLoop&lt;LoopSignal&gt; =
-        EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
+    let mut event_loop = EventLoop::try_new()
+        .expect(&quot;Failed to initialize the event loop!&quot;);
 
-    let source = Timer::new().expect(&quot;Failed to create timer event source!&quot;);
+    let timer = Timer::from_duration(Duration::from_secs(5));
 
-    let timer_handle = source.handle();
-    timer_handle.add_timeout(std::time::Duration::from_secs(5), &quot;Timeout reached!&quot;);
-
-    let handle = event_loop.handle();
-
-    handle
-        .insert_source(source, |event, _metadata, shared_data| {
-            println!(&quot;Event fired: {}&quot;, event);
-            shared_data.stop();
+    event_loop.handle()
+        .insert_source(timer, |deadline, _: &amp;mut (), _shared_data| {
+            println!(&quot;Event fired for: {:?}&quot;, deadline);
+            TimeoutAction::Drop
         })
         .expect(&quot;Failed to insert event source!&quot;);
 
-    let mut shared_data = event_loop.get_signal();
-
     event_loop
-        .run(None, &amp;mut shared_data, |_shared_data| {})
+        .dispatch(None, &amp;mut ())
         .expect(&quot;Error during event loop!&quot;);
 }
-</code></pre></pre>
-<h2 id="what-next"><a class="header" href="#what-next">What next?</a></h2>
-<p>Of course, this is all a bit more wordy than simply <code>std::thread::sleep()</code>, so what have we achieved?</p>
-<p>The next couple of chapters will show how we can create our own event sources through <em>composition</em>, and how to use handles and events in more complex ways.</p>
+</code></pre>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="pinging-the-event-loop"><a class="header" href="#pinging-the-event-loop">&quot;Pinging&quot; the event loop</a></h1>
 <p>The <a href="api/calloop/ping/struct.Ping.html"><code>Ping</code></a> event source has one very simple job — wake up the event loop. Use this when you know there are events for your event source to process, but those events aren't going to wake the event loop up themselves.</p>
 <p>For example, calloop's own <a href="api/calloop/channel/struct.Channel.html"><code>message channel</code></a> uses Rust's native MPSC channel internally. Because there's no way for the internal message queue to wake up the event loop, it's coupled with a <code>Ping</code> source that wakes the loop up when there are new messages.</p>
