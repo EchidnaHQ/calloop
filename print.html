@@ -251,15 +251,18 @@ do_thing_three().await;
 <p>So with <code>use calloop::timer::Timer</code> at the top of our <code>.rs</code> file, we can create a timer that will wait for 5 seconds:</p>
 <pre><code class="language-rust noplayground"><span class="boring">use std::time::Duration;
 </span><span class="boring">
-</span><span class="boring">use calloop::{timer::{Timer, TimeoutAction}, EventLoop};
+</span><span class="boring">use calloop::{
+</span><span class="boring">    timer::{TimeoutAction, Timer},
+</span><span class="boring">    EventLoop,
+</span><span class="boring">};
 </span><span class="boring">
 </span><span class="boring">fn main() {
-</span><span class="boring">    let mut event_loop = EventLoop::try_new()
-</span><span class="boring">        .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">    let mut event_loop = EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
 </span>    let timer = Timer::from_duration(Duration::from_secs(5));
 <span class="boring">
-</span><span class="boring">    event_loop.handle()
+</span><span class="boring">    event_loop
+</span><span class="boring">        .handle()
 </span><span class="boring">        .insert_source(timer, |deadline, _: &amp;mut (), _shared_data| {
 </span><span class="boring">            println!(&quot;Event fired for: {:?}&quot;, deadline);
 </span><span class="boring">            TimeoutAction::Drop
@@ -275,15 +278,18 @@ do_thing_three().await;
 <p>We have an event source, we have our shared data, and we know how to start our loop running. All that is left is to learn how to combine these things:</p>
 <pre><code class="language-rust noplayground"><span class="boring">use std::time::Duration;
 </span><span class="boring">
-</span><span class="boring">use calloop::{timer::{Timer, TimeoutAction}, EventLoop};
+</span><span class="boring">use calloop::{
+</span><span class="boring">    timer::{TimeoutAction, Timer},
+</span><span class="boring">    EventLoop,
+</span><span class="boring">};
 </span><span class="boring">
 </span><span class="boring">fn main() {
-</span><span class="boring">    let mut event_loop = EventLoop::try_new()
-</span><span class="boring">        .expect(&quot;Failed to initialize the event loop!&quot;);
+</span><span class="boring">    let mut event_loop = EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 </span><span class="boring">
 </span><span class="boring">    let timer = Timer::from_duration(Duration::from_secs(5));
 </span><span class="boring">
-</span>    event_loop.handle()
+</span>    event_loop
+        .handle()
         .insert_source(timer, |deadline, _: &amp;mut (), _shared_data| {
             println!(&quot;Event fired for: {:?}&quot;, deadline);
             TimeoutAction::Drop
@@ -311,15 +317,18 @@ do_thing_three().await;
 <p>Putting it all together, we have:</p>
 <pre><code class="language-rust noplayground">use std::time::Duration;
 
-use calloop::{timer::{Timer, TimeoutAction}, EventLoop};
+use calloop::{
+    timer::{TimeoutAction, Timer},
+    EventLoop,
+};
 
 fn main() {
-    let mut event_loop = EventLoop::try_new()
-        .expect(&quot;Failed to initialize the event loop!&quot;);
+    let mut event_loop = EventLoop::try_new().expect(&quot;Failed to initialize the event loop!&quot;);
 
     let timer = Timer::from_duration(Duration::from_secs(5));
 
-    event_loop.handle()
+    event_loop
+        .handle()
         .insert_source(timer, |deadline, _: &amp;mut (), _shared_data| {
             println!(&quot;Event fired for: {:?}&quot;, deadline);
             TimeoutAction::Drop
@@ -415,28 +424,24 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
 </span><span class="boring">    // Our toy async code.
 </span><span class="boring">    let async_friendly_task = async move {
 </span><span class="boring">        sender_friendly.send(&quot;Hello,&quot;).await.ok();
-</span><span class="boring">        receiver_aloof
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_aloof.next().await {
+</span><span class="boring">            println!(&quot;Aloof said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_friendly.send(&quot;world!&quot;).await.ok();
-</span><span class="boring">        receiver_aloof
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_aloof.next().await {
+</span><span class="boring">            println!(&quot;Aloof said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        &quot;Bye!&quot;
 </span><span class="boring">    };
 </span><span class="boring">
 </span><span class="boring">    let async_aloof_task = async move {
-</span><span class="boring">        receiver_friendly
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_friendly.next().await {
+</span><span class="boring">            println!(&quot;Friendly said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_aloof.send(&quot;Oh,&quot;).await.ok();
-</span><span class="boring">        receiver_friendly
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_friendly.next().await {
+</span><span class="boring">            println!(&quot;Friendly said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_aloof.send(&quot;it's you.&quot;).await.ok();
 </span><span class="boring">        &quot;Regards.&quot;
 </span><span class="boring">    };
@@ -481,28 +486,24 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
 </span><span class="boring">    // Our toy async code.
 </span><span class="boring">    let async_friendly_task = async move {
 </span><span class="boring">        sender_friendly.send(&quot;Hello,&quot;).await.ok();
-</span><span class="boring">        receiver_aloof
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_aloof.next().await {
+</span><span class="boring">            println!(&quot;Aloof said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_friendly.send(&quot;world!&quot;).await.ok();
-</span><span class="boring">        receiver_aloof
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_aloof.next().await {
+</span><span class="boring">            println!(&quot;Aloof said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        &quot;Bye!&quot;
 </span><span class="boring">    };
 </span><span class="boring">
 </span><span class="boring">    let async_aloof_task = async move {
-</span><span class="boring">        receiver_friendly
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_friendly.next().await {
+</span><span class="boring">            println!(&quot;Friendly said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_aloof.send(&quot;Oh,&quot;).await.ok();
-</span><span class="boring">        receiver_friendly
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_friendly.next().await {
+</span><span class="boring">            println!(&quot;Friendly said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_aloof.send(&quot;it's you.&quot;).await.ok();
 </span><span class="boring">        &quot;Regards.&quot;
 </span><span class="boring">    };
@@ -547,28 +548,24 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
     // Our toy async code.
     let async_friendly_task = async move {
         sender_friendly.send(&quot;Hello,&quot;).await.ok();
-        receiver_aloof
-            .next()
-            .await
-            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+        if let Some(msg) = receiver_aloof.next().await {
+            println!(&quot;Aloof said: {}&quot;, msg);
+        }
         sender_friendly.send(&quot;world!&quot;).await.ok();
-        receiver_aloof
-            .next()
-            .await
-            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+        if let Some(msg) = receiver_aloof.next().await {
+            println!(&quot;Aloof said: {}&quot;, msg);
+        }
         &quot;Bye!&quot;
     };
 
     let async_aloof_task = async move {
-        receiver_friendly
-            .next()
-            .await
-            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+        if let Some(msg) = receiver_friendly.next().await {
+            println!(&quot;Friendly said: {}&quot;, msg);
+        }
         sender_aloof.send(&quot;Oh,&quot;).await.ok();
-        receiver_friendly
-            .next()
-            .await
-            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+        if let Some(msg) = receiver_friendly.next().await {
+            println!(&quot;Friendly said: {}&quot;, msg);
+        }
         sender_aloof.send(&quot;it's you.&quot;).await.ok();
         &quot;Regards.&quot;
     };
@@ -614,28 +611,24 @@ receiver.next().await.map(|m| println!(&quot;Received: {}&quot;, m));
 </span><span class="boring">    // Our toy async code.
 </span><span class="boring">    let async_friendly_task = async move {
 </span><span class="boring">        sender_friendly.send(&quot;Hello,&quot;).await.ok();
-</span><span class="boring">        receiver_aloof
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_aloof.next().await {
+</span><span class="boring">            println!(&quot;Aloof said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_friendly.send(&quot;world!&quot;).await.ok();
-</span><span class="boring">        receiver_aloof
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Aloof said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_aloof.next().await {
+</span><span class="boring">            println!(&quot;Aloof said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        &quot;Bye!&quot;
 </span><span class="boring">    };
 </span><span class="boring">
 </span><span class="boring">    let async_aloof_task = async move {
-</span><span class="boring">        receiver_friendly
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_friendly.next().await {
+</span><span class="boring">            println!(&quot;Friendly said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_aloof.send(&quot;Oh,&quot;).await.ok();
-</span><span class="boring">        receiver_friendly
-</span><span class="boring">            .next()
-</span><span class="boring">            .await
-</span><span class="boring">            .map(|m| println!(&quot;Friendly said: {}&quot;, m));
+</span><span class="boring">        if let Some(msg) = receiver_friendly.next().await {
+</span><span class="boring">            println!(&quot;Friendly said: {}&quot;, msg);
+</span><span class="boring">        }
 </span><span class="boring">        sender_aloof.send(&quot;it's you.&quot;).await.ok();
 </span><span class="boring">        &quot;Regards.&quot;
 </span><span class="boring">    };
